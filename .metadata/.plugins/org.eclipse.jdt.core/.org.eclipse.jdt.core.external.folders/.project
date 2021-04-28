@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>.org.eclipse.jdt.core.external.folders</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>.link1</name>
+			<type>2</type>
+			<location>C:/Users/danie/.p2/pool/plugins/org.eclipse.m2e.maven.indexer_1.17.1.20210129-0849</location>
+		</link>
+		<link>
+			<name>.link2</name>
+			<type>2</type>
+			<location>C:/Users/danie/.p2/pool/plugins/org.eclipse.m2e.maven.runtime.slf4j.simple_1.16.0.20200610-1735</location>
+		</link>
+		<link>
+			<name>.link3</name>
+			<type>2</type>
+			<location>C:/Users/danie/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_1.16.0.20210129-0849</location>
+		</link>
+	</linkedResources>
+</projectDescription>

@@ -1,0 +1,9 @@
+package devices.interfaces;
+
+public interface IEngine {
+	
+	setrpm();
+	
+	getrpm();
+
+}

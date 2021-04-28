@@ -1,9 +1,0 @@
-package devices.interfaces;
-
-public interface IEngine {
-		
-	public void setrpm(int rpm);
-	
-	public int getrpm(int rpm);
-
-}

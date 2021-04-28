@@ -1,11 +1,21 @@
 package device.engine;
 
-public class Engine {
+import devices.interfaces.IEngine;
+
+public class Engine implements IEngine{
 	
-	public int rpm;
+	protected int rpm = 0;
 	
-	public Engine(int rpm) {
+
+	@Override
+	public void setRPM(int rpm) {
 		this.rpm = rpm;
+		System.out.println("[ENGINE] Setting to " +rpm + " rpm");
+	}
+
+	@Override
+	public int getRPM() {
+		return this.rpm;
 	}
 
 }

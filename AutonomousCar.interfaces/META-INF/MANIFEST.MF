@@ -5,3 +5,4 @@ Bundle-SymbolicName: AutonomousCar.interfaces
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: AutonomousCar.interfaces
 Bundle-RequiredExecutionEnvironment: JavaSE-11
+Export-Package: devices.interfaces

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Road_type
+Bundle-SymbolicName: monitor.Road_type
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: monitor.Road.type
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: org.osgi.framework;version="1.10.0",
+ sua.autonomouscar.monitors.interfaces

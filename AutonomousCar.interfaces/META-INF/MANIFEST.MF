@@ -9,4 +9,5 @@ Export-Package: sua.autonomouscar.devices.interfaces,
  sua.autonomouscar.driving.interfaces,
  sua.autonomouscar.interaction.interfaces,
  sua.autonomouscar.interfaces,
+ sua.autonomouscar.monitors.interfaces,
  sua.autonomouscar.simulation.interfaces

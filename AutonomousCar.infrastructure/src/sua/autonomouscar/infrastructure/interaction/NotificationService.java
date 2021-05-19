@@ -20,6 +20,10 @@ public class NotificationService extends Thing implements INotificationService {
 		this.addImplementedInterface(INotificationService.class.getName());
 		this.mechanisms = new ArrayList<String>();
 	}
+	
+	public List<String> getMechanisms() {
+		return this.mechanisms;
+	}
 
 	@Override
 	public INotificationService notify(String message) {

@@ -17,10 +17,7 @@ public class PropList {
 	ESensorStatus sensor_status_prop = null;
 	int user_location_prop = -1;
 	
-	public void setRoad_type_prop(ERoadType rtp)
-	{
-		road_type_prop = rtp;
-	}
+
 	
 	public EAutonomousLevel getNivel_autonomia() {
 		return nivel_autonomia;
@@ -51,6 +48,10 @@ public class PropList {
 		return road_type_prop;
 	}
 	
+	public void setRoad_type_prop(ERoadType rtp)
+	{
+		road_type_prop = rtp;
+	}
 	public void setNivel_autonomia(EAutonomousLevel na)
 	{
 		nivel_autonomia = na;
@@ -81,3 +82,4 @@ public class PropList {
 		user_location_prop = ulp;
 	}
 }
+

@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Congestion
+Bundle-SymbolicName: monitor.Congestion
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: monitor.congestion.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: org.osgi.framework;version="1.3.0",
+ sua.autonomouscar.infrastructure,
+ sua.autonomouscar.infrastructure.monitors,
+ sua.autonomouscar.monitors.interfaces
+Automatic-Module-Name: monitor.Congestion

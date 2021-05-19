@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Properties
+Bundle-SymbolicName: AutonomousCar.properties
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: AutonomousCar.properties
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: sua.autonomouscar.interfaces

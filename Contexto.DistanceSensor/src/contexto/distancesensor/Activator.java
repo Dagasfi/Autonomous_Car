@@ -1,15 +1,15 @@
-package contexto.congestion;
+package contexto.distancesensor;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import sua.autonomouscar.context.interfaces.ICongestionContext;
+import sua.autonomouscar.context.interfaces.IDistanceSensorContext;
 
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
 	
-	protected ICongestionContext contextoCongestion = null;
+	protected IDistanceSensorContext contextoSensorDistancia = null;
 
 	static BundleContext getContext() {
 		return context;
@@ -17,7 +17,8 @@ public class Activator implements BundleActivator {
 
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
-		this.contextoCongestion = new ContextoCongestion(bundleContext, "probe_congestion");
+		this.contextoSensorDistancia = new ContextoDistanceSensor(bundleContext, "probe_distanceSensor");
+
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {

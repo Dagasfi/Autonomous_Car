@@ -2,15 +2,16 @@ package monitor.congestion;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 
-import sua.autonomouscar.infrastructure.monitors.Monitor;
-
+import sua.autonomouscar.context.interfaces.ICongestionContext;
+import sua.autonomouscar.infrastructure.OSGiUtils;
 
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
-	protected Monitor monitor = null;
-
+	
+	protected ControladorCongestion controlador = null;
 
 	static BundleContext getContext() {
 		return context;
@@ -18,17 +19,19 @@ public class Activator implements BundleActivator {
 
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
-		this.monitor = new MonitorCongestion(bundleContext, "monitorCongestion");
+		this.controlador = new ControladorCongestion(bundleContext, "Monitor_congestion");
+		this.controlador.registerThing();
 		
 		
+		
+		String listenerFiltro = "(" + Constants.OBJECTCLASS + "=" + ICongestionContext.class.getName() + ")";
+
+		this.context.addServiceListener(controlador, listenerFiltro);
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {
-		if ( this.monitor != null )
-			this.monitor.unregisterThing();
-		
+		this.context.removeServiceListener(controlador);
 		Activator.context = null;
 	}
 
 }
-

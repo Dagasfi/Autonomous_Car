@@ -1,15 +1,15 @@
-package contexto.distancesensor;
+package contexto.lidar;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import sua.autonomouscar.context.interfaces.IDistanceSensorContext;
+import sua.autonomouscar.context.interfaces.ILidarContext;
 
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
 	
-	protected IDistanceSensorContext contextoSensorDistancia = null;
+	protected ILidarContext contextoLidar = null;
 
 	static BundleContext getContext() {
 		return context;
@@ -17,7 +17,7 @@ public class Activator implements BundleActivator {
 
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
-		this.contextoSensorDistancia = new ContextoDistanceSensor(bundleContext, "probe_distanceSensor");
+		this.contextoLidar = new ContextoLidar(bundleContext, "probe_Lidar");
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {

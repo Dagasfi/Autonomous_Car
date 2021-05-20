@@ -23,6 +23,7 @@ public class Activator implements BundleActivator {
 		this.controlador.registerThing();
 		
 		String listenerFiltro = "(" + Constants.OBJECTCLASS + "=" + ICongestionContext.class.getName() + ")";
+		
 		this.context.addServiceListener(controlador, listenerFiltro);
 	}
 

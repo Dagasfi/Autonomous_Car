@@ -6,6 +6,7 @@ import org.osgi.framework.Constants;
 
 import sua.autonomouscar.context.interfaces.ICongestionContext;
 import sua.autonomouscar.context.interfaces.IDistanceSensorContext;
+import sua.autonomouscar.context.interfaces.ILidarContext;
 
 public class Activator implements BundleActivator {
 
@@ -22,10 +23,10 @@ public class Activator implements BundleActivator {
 		this.controlador = new ControladorSensorStatus(bundleContext, "Monitor_Sensor");
 		this.controlador.registerThing();
 		
-		String listenerFiltro = "(" + Constants.OBJECTCLASS + "=" + IDistanceSensorContext.class.getName() + ")";
-		
-		//FALTA AÑADIR EL LISTENER PARA EL LIDAR!
-		// String listenerFiltro = "(" + Constants.OBJECTCLASS + "=" + IDistanceSensorContext.class.getName() + ")";
+		String listenerFiltro = "(| (" + Constants.OBJECTCLASS + "=" + ILidarContext.class.getName()
+				+ ")(" + Constants.OBJECTCLASS + "=" + IDistanceSensorContext.class.getName() + "))";
+
+//		String listenerFiltro = "(" + Constants.OBJECTCLASS + "=" + IDistanceSensorContext.class.getName() + ")";
 		this.context.addServiceListener(controlador, listenerFiltro);
 	}
 

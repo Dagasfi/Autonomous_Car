@@ -6,6 +6,7 @@ import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 
 import sua.autonomouscar.context.interfaces.IDistanceSensorContext;
+import sua.autonomouscar.context.interfaces.ILidarContext;
 import sua.autonomouscar.infrastructure.monitors.Monitor;
 import sua.autonomouscar.interfaces.ERoadStatus;
 import sua.autonomouscar.interfaces.ESensorStatus;
@@ -17,6 +18,10 @@ public class ControladorSensorStatus extends Monitor implements ServiceListener{
 
 	protected BundleContext context = null;
 	
+	private boolean sensorDistContext = false;
+	private boolean lidarContext = false;
+	
+	
 	public ControladorSensorStatus(BundleContext context, String id) {
 		super(context, id);
 		this.context = context;
@@ -25,9 +30,17 @@ public class ControladorSensorStatus extends Monitor implements ServiceListener{
 	@Override
 	public void serviceChanged(ServiceEvent event) {
 		
-		IDistanceSensorContext sensorDistContext = (IDistanceSensorContext)  this.context.getService(event.getServiceReference());
-		boolean distanceSensorWorking = sensorDistContext.isDistanceSensorWorking();
-		boolean lidarSensorWorking = false;
+		Object service = this.context.getService(event.getServiceReference());
+		
+		if (service instanceof ILidarContext) {
+			System.out.println("Es del lidar.");
+			ILidarContext sensorDistContext = (ILidarContext)  this.context.getService(event.getServiceReference());
+			this.lidarContext = sensorDistContext.isLidarWorking();
+		}else if(service instanceof IDistanceSensorContext) {
+			System.out.println("Es un Distancesensor");
+			IDistanceSensorContext sensorDistContext = (IDistanceSensorContext)  this.context.getService(event.getServiceReference());
+			this.sensorDistContext = sensorDistContext.isDistanceSensorWorking();
+		}
 		
 		//Falta pillar el del LIDAR.
 		
@@ -43,21 +56,18 @@ public class ControladorSensorStatus extends Monitor implements ServiceListener{
 		switch (event.getType()) {
 		case ServiceEvent.MODIFIED:
 		case ServiceEvent.REGISTERED:
-			if(!distanceSensorWorking && !lidarSensorWorking) {
+			if(!this.sensorDistContext && !this.lidarContext) {
 				propertiesList.setSensor_status_prop(ESensorStatus.No_Distance_Sensor);
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: sensor_status_prop=" + ESensorStatus.No_Distance_Sensor);			
 					
-			}else if(!distanceSensorWorking) {
+			}else if(!this.sensorDistContext) {
 				propertiesList.setSensor_status_prop(ESensorStatus.Distance_sensor_error);
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: sensor_status_prop=" + ESensorStatus.Distance_sensor_error);			
 					
-			}else if(!lidarSensorWorking) {
+			}else if(!this.lidarContext) {
 				propertiesList.setSensor_status_prop(ESensorStatus.Lidar_error);
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: sensor_status_prop=" + ESensorStatus.Lidar_error);			
-			}
-			
-			//Aqui falla algo. Alguna de las condiciones sobra. Investigarlo please
-			 if(distanceSensorWorking || lidarSensorWorking) {
+			}else if(this.sensorDistContext && this.lidarContext) {
 				propertiesList.setSensor_status_prop(ESensorStatus.OK);
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: sensor_status_prop=" + ESensorStatus.OK);			
 			 }

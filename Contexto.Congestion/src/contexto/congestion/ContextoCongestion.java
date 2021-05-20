@@ -23,10 +23,7 @@ public class ContextoCongestion extends Thing implements ICongestionContext {
 		this.props.put("id", id);
 		this.context = context;
 		this.setCongestion(ERoadStatus.UNKNOWN);
-		System.out.println("[Context] : Setting type to: UNKNOWN");
-
 		this.sr = this.context.registerService(ICongestionContext.class, this, props);
-		System.out.println("\n\nSR::: "+ sr + "\n\n");
 		// this.registerThing();
 	}
 	
@@ -37,7 +34,6 @@ public class ContextoCongestion extends Thing implements ICongestionContext {
 
 	@Override
 	public void setCongestion(ERoadStatus type) {
-		System.out.println("\t[Context] : Setting type to: " + type);
 		this.props.put("type", type);
 		this._updateProps();
 	}

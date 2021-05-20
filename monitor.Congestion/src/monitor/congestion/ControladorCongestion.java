@@ -30,8 +30,6 @@ public class ControladorCongestion extends Monitor implements ServiceListener{
 		ICongestionContext contextoCarretera = (ICongestionContext) this.context.getService(event.getServiceReference());
 		ERoadStatus congestionType = contextoCarretera.getCongestion();
 		
-		System.out.println(this.context.getServiceReference(IProperty.class.getName()));		
-		
 		ServiceReference ref = this.context.getServiceReference(IProperty.class.getName());
 		if ( ref == null ) {
 			System.out.println("[Monitor] - No PropList found, nothing to do!");

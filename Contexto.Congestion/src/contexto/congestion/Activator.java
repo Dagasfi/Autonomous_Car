@@ -17,7 +17,7 @@ public class Activator implements BundleActivator {
 
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
-		this.contextoCongestion = new ContextoCongestion(bundleContext, "prop_congestion");
+		this.contextoCongestion = new ContextoCongestion(bundleContext, "probe_congestion");
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {

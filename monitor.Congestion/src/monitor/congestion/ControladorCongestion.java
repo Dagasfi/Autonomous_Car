@@ -29,7 +29,7 @@ public class ControladorCongestion extends Monitor implements ServiceListener{
 	public void serviceChanged(ServiceEvent event) {
 		ICongestionContext contextoCarretera = (ICongestionContext) this.context.getService(event.getServiceReference());
 		ERoadStatus congestionType = contextoCarretera.getCongestion();
-		
+				
 		ServiceReference ref = this.context.getServiceReference(IProperty.class.getName());
 		if ( ref == null ) {
 			System.out.println("[Monitor] - No PropList found, nothing to do!");
@@ -44,7 +44,6 @@ public class ControladorCongestion extends Monitor implements ServiceListener{
 			propertiesList.setCongestion_prop(congestionType);
 			System.out.println("[Monitor] - Propiedad de adaptacion actualizada: congestion_prop=" + congestionType);			
 			break;
-
 		default:
 			break;
 		}

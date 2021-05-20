@@ -5,6 +5,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import sua.autonomouscar.context.interfaces.ICongestionContext;
+import sua.autonomouscar.context.interfaces.IDistanceSensorContext;
 import sua.autonomouscar.interfaces.ERoadStatus;
 
 public class Activator implements BundleActivator {
@@ -24,6 +25,20 @@ public class Activator implements BundleActivator {
 			contextoCongestion = (ICongestionContext) this.context.getService(ref);
 			contextoCongestion.setCongestion(ERoadStatus.JAM);		
 		}
+		
+		IDistanceSensorContext contextoSensorDistancia= null;
+		ServiceReference ref2 = (ServiceReference)this.context.getServiceReference(IDistanceSensorContext.class);
+		
+		System.out.println("\n"+ this.context.getAllServiceReferences(IDistanceSensorContext.class.getName(), null) +"\n");
+		if(ref2 != null) {
+			System.out.println("[SIM] - DISTANCE SENSOR TO False!!!");
+			contextoSensorDistancia = (IDistanceSensorContext) this.context.getService(ref2);
+			contextoSensorDistancia.setDistanceSensorWorkingMode(false);;	
+			System.out.println("[SIM] - DISTANCE SENSOR TO False!!!");
+
+		}
+		System.out.println("[SIM]- STOPPED.");
+		
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {
@@ -34,7 +49,6 @@ public class Activator implements BundleActivator {
 			contextoCongestion = (ICongestionContext) this.context.getService(ref);
 			contextoCongestion.setCongestion(ERoadStatus.FLUID);		
 		}
-		System.out.println("[SIM]- STOPPED.");
 		Activator.context = null;
 	}
 

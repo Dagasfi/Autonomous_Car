@@ -1,4 +1,4 @@
-package contexto.distancesensor;
+package contexto.lidar;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -6,42 +6,40 @@ import java.util.Hashtable;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
-import sua.autonomouscar.context.interfaces.ICongestionContext;
 import sua.autonomouscar.context.interfaces.IDistanceSensorContext;
+import sua.autonomouscar.context.interfaces.ILidarContext;
 import sua.autonomouscar.infrastructure.Thing;
 
-public class ContextoDistanceSensor extends Thing implements IDistanceSensorContext{
+public class ContextoLidar extends Thing implements ILidarContext{
+
 
 	protected BundleContext context = null;
 	protected Dictionary<String, Object> props = new Hashtable<String, Object>();
 	protected ServiceRegistration sr = null;
 	
-	
-	public ContextoDistanceSensor(BundleContext context, String id) {
+	public ContextoLidar(BundleContext context, String id) {
 		super(context, id);
-		System.out.println("SE HA REGISTRADO EL DISTANCESENSOR");
-		this.addImplementedInterface(IDistanceSensorContext.class.getName());
+		this.addImplementedInterface(ILidarContext.class.getName());
 		this.props.put("id", id);
 		this.context = context;
-		this.setDistanceSensorWorkingMode(true);
-		this.sr = this.context.registerService(IDistanceSensorContext.class, this, props);
+		this.setLidarWorkingMode(true);
+		this.sr = this.context.registerService(ILidarContext.class, this, props);
 	}
-	
+
 	@Override
-	public boolean isDistanceSensorWorking() {
+	public boolean isLidarWorking() {
 		return (boolean)this.props.get("isWorking");
 	}
 
-
 	@Override
-	public void setDistanceSensorWorkingMode(boolean isWorking) {
+	public void setLidarWorkingMode(boolean isWorking) {
 		this.props.put("isWorking", isWorking);
 		this._updateProps();
-		
 	}
 
 	private void _updateProps() {
 		if ( this.sr != null )
 			this.sr.setProperties(this.props);
 	}
+
 }

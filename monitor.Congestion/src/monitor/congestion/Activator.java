@@ -25,7 +25,6 @@ public class Activator implements BundleActivator {
 		
 		
 		String listenerFiltro = "(" + Constants.OBJECTCLASS + "=" + ICongestionContext.class.getName() + ")";
-
 		this.context.addServiceListener(controlador, listenerFiltro);
 	}
 

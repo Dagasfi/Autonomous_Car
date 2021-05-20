@@ -11,6 +11,7 @@ Import-Package: org.osgi.framework,
  sua.autonomouscar.interaction.interfaces,
  sua.autonomouscar.interfaces,
  sua.autonomouscar.monitors.interfaces,
+ sua.autonomouscar.properties.interfaces,
  sua.autonomouscar.simulation.interfaces
 Export-Package: sua.autonomouscar.infrastructure,
  sua.autonomouscar.infrastructure.devices,

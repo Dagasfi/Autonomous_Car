@@ -1,14 +1,17 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: RoadStatus
-Bundle-SymbolicName: Simulacion.RoadStatus
+Bundle-Name: AutonomousLevel
+Bundle-SymbolicName: Monitor.AutonomousLevel
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: simulacion.roadstatus.Activator
+Bundle-Activator: monitor.autonomouslevel.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Import-Package: org.osgi.framework;version="1.3.0",
  sua.autonomouscar.context.interfaces,
  sua.autonomouscar.devices.interfaces,
  sua.autonomouscar.infrastructure,
  sua.autonomouscar.infrastructure.devices,
- sua.autonomouscar.interfaces
-Automatic-Module-Name: Simulacion.RoadStatus
+ sua.autonomouscar.infrastructure.monitors,
+ sua.autonomouscar.monitors.interfaces,
+ sua.autonomouscar.properties,
+ sua.autonomouscar.properties.interfaces
+Automatic-Module-Name: Monitor.AutonomousLevel

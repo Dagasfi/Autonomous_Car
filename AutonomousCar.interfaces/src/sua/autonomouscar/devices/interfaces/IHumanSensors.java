@@ -19,4 +19,7 @@ public interface IHumanSensors {
 	public IHumanSensors setCopilotSeatSensor(ISeatSensor sensor);
 	public IHumanSensors setHandsOnWheelSensor(IHandsOnWheelSensor sensor);
 
+	
+	public IHumanSensors setWorking(boolean mode);
+	public boolean isWorking();
 }

@@ -6,6 +6,7 @@ import org.osgi.framework.ServiceReference;
 
 import sua.autonomouscar.context.interfaces.ICongestionContext;
 import sua.autonomouscar.context.interfaces.IDistanceSensorContext;
+import sua.autonomouscar.context.interfaces.IDriverSleepingContext;
 import sua.autonomouscar.interfaces.ERoadStatus;
 
 public class Activator implements BundleActivator {
@@ -35,6 +36,18 @@ public class Activator implements BundleActivator {
 			contextoSensorDistancia = (IDistanceSensorContext) this.context.getService(ref2);
 			contextoSensorDistancia.setDistanceSensorWorkingMode(false);;	
 			System.out.println("[SIM] - DISTANCE SENSOR TO False!!!");
+
+		}
+		
+		IDriverSleepingContext contextoDriverSleeping= null;
+		ServiceReference ref4 = (ServiceReference)this.context.getServiceReference(IDriverSleepingContext.class);
+		
+		System.out.println("\n"+ this.context.getAllServiceReferences(IDriverSleepingContext.class.getName(), null) +"\n");
+		if(ref4 != null) {
+			System.out.println("[SIM] - DRIVER SLEEPING TO False!!!");
+			contextoDriverSleeping = (IDriverSleepingContext) this.context.getService(ref4);
+			contextoDriverSleeping.setDriverSleeping(false);;	
+			System.out.println("[SIM] - DRIVER SLEEPING TO False!!!");
 
 		}
 		System.out.println("[SIM]- STOPPED.");

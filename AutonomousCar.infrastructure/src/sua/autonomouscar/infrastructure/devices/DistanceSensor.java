@@ -9,11 +9,13 @@ import sua.autonomouscar.infrastructure.Thing;
 public class DistanceSensor extends Thing implements IDistanceSensor {
 	
 	public static final String DISTANCE = "distance";
+	public static final String WORKINGMODE = "isworking";
 	public static final int MAX_DISTANCE = 99999;	// expressed in cms
 		
 	public DistanceSensor(BundleContext context, String id) {
 		super(context, id);
 		this.addImplementedInterface(IDistanceSensor.class.getName());
+		this.setWorking(true);
 		this.setDistance(DistanceSensor.MAX_DISTANCE);
 	}
 	
@@ -27,6 +29,18 @@ public class DistanceSensor extends Thing implements IDistanceSensor {
 	public IDistanceSensor setDistance(int distance) {
 		this.setProperty(DistanceSensor.DISTANCE, distance);
 		return this;
+	}
+
+
+	@Override
+	public boolean isWorking() {
+		return (boolean) this.getProperty(DistanceSensor.WORKINGMODE);
+	}
+
+
+	@Override
+	public void setWorking(boolean mode) {
+		this.setProperty(DistanceSensor.WORKINGMODE, mode);		
 	}
 
 

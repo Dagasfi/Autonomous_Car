@@ -8,6 +8,7 @@ import org.osgi.framework.ServiceRegistration;
 
 import sua.autonomouscar.context.interfaces.IDriverSleepingContext;
 import sua.autonomouscar.context.interfaces.IManosVolanteContext;
+
 import sua.autonomouscar.context.interfaces.IUbicacionDriverContext;
 import sua.autonomouscar.infrastructure.Thing;
 
@@ -22,22 +23,21 @@ public class ContextoUbicacionDriver extends Thing implements IUbicacionDriverCo
 		this.addImplementedInterface(IUbicacionDriverContext.class.getName());
 		this.props.put("id", id);
 		this.context = context;
-		this.setUbicacionDriver(1);
+		this.setUbicacionDriver(-1);
 		this.sr = this.context.registerService(IUbicacionDriverContext.class, this, props);
-		
 	}
-
+	
 	@Override
 	public int getUbicacionDriver() {
-		return (int)this.props.get("ubicacionDriver");
+		// TODO Auto-generated method stub
+		return (int) this.props.get("location");
 	}
 
 	@Override
 	public void setUbicacionDriver(int location) {
-		this.props.put("ubicacionDriver", location);
+		this.props.put("location",location);
 		this._updateProps();
-		
-	}
+  }
 	
 	private void _updateProps() {
 		if ( this.sr != null )

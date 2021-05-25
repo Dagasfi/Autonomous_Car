@@ -6,4 +6,6 @@ public interface ILineSensor {
 	
 	public ILineSensor setLineDetected(boolean value); // for simulation purposes only
 
+	public void setWorking(boolean mode);
+	public boolean isWorking();
 }

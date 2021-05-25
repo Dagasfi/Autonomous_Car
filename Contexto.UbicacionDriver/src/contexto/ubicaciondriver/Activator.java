@@ -3,26 +3,30 @@ package contexto.ubicaciondriver;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+
 import sua.autonomouscar.context.interfaces.IManosVolanteContext;
 import sua.autonomouscar.context.interfaces.IUbicacionDriverContext;
 
-public class Activator implements BundleActivator {
-
+public class Activator implements BundleActivator{
+	
 	private static BundleContext context;
 	
-	protected IUbicacionDriverContext contextoUbicacionDriver = null;
-
+	protected IUbicacionDriverContext contextoUbicacionDriverContext = null;
+	
 	static BundleContext getContext() {
 		return context;
 	}
 
+
+	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
-		this.contextoUbicacionDriver = new ContextoUbicacionDriver(bundleContext, "probe_UbicacionDriver");
+		this.contextoUbicacionDriverContext = new ContextoUbicacionDriver(bundleContext, "probe_ubicacionDriver");
 	}
 
-	public void stop(BundleContext bundleContext) throws Exception {
+	@Override
+	public void stop(BundleContext context) throws Exception {
 		Activator.context = null;
 	}
-
+	
 }

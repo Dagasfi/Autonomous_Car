@@ -18,6 +18,15 @@ import sua.autonomouscar.interfaces.EDriverAttention;
 
 public class PropList extends Thing implements IProperty{
 	
+	
+
+	public static final String ROADTYPEPROP = "road_type_prop";
+	public static final String LEVELAUTONOMY0 = "0";
+	public static final String LEVELAUTONOMY1 = "1";
+	public static final String LEVELAUTONOMY2 = "2";
+	public static final String LEVELAUTONOMY3 = "3";
+	
+	
 	protected Dictionary<String, Object> props = new Hashtable<String, Object>();
 	protected ServiceRegistration sr = null;
 	
@@ -32,7 +41,7 @@ public class PropList extends Thing implements IProperty{
 
 	@Override
 	public ERoadType getRoad_type_prop() {
-		return (ERoadType) this.props.get("road_type_prop");
+		return (ERoadType) this.props.get(PropList.ROADTYPEPROP);
 	}
 
 	@Override
@@ -67,7 +76,7 @@ public class PropList extends Thing implements IProperty{
 
 	@Override
 	public void setRoad_type_prop(ERoadType roadType) {
-		this.props.put("road_type_prop", roadType);
+		this.props.put(PropList.ROADTYPEPROP, roadType);
 		this._updateProps();
 	}
 
@@ -110,6 +119,17 @@ public class PropList extends Thing implements IProperty{
 	private void _updateProps() {
 		if ( this.sr != null )
 			this.sr.setProperties(this.props);
+	}
+
+	@Override
+	public String getMaxAutonomyLevel() {
+		return (String) this.props.get("max_autonomy_level");
+	}
+
+	@Override
+	public void setMaxAutonomyLevel(String level) {
+		this.props.put("max_autonomy_level", level);
+		this._updateProps();
 	}
 	
 	

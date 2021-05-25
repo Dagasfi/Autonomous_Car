@@ -10,6 +10,8 @@ import sua.autonomouscar.context.interfaces.IDriverSleepingContext;
 import sua.autonomouscar.context.interfaces.IManosVolanteContext;
 import sua.autonomouscar.context.interfaces.IMirandoAlFrente;
 import sua.autonomouscar.context.interfaces.IUbicacionDriverContext;
+import sua.autonomouscar.devices.interfaces.IDistanceSensor;
+import sua.autonomouscar.infrastructure.devices.DistanceSensor;
 import sua.autonomouscar.interfaces.ERoadStatus;
 
 public class Activator implements BundleActivator {
@@ -42,6 +44,16 @@ public class Activator implements BundleActivator {
 
 		}
 		
+    ServiceReference ref3 = (ServiceReference)this.context.getServiceReference(IDistanceSensor.class);
+		
+		if(ref3 != null) {
+			System.out.println("[SIM] - DISTANCE SENSOR TO False!!!");
+			DistanceSensor sensorDistancia = (DistanceSensor) this.context.getService(ref3);
+			sensorDistancia.setWorking(false);
+			System.out.println("[SIM] - "+ sensorDistancia.getId() +" SENSOR TO False!!!");
+
+		}
+    
 		IDriverSleepingContext contextoDriverSleeping= null;
 		ServiceReference ref4 = (ServiceReference)this.context.getServiceReference(IDriverSleepingContext.class);
 		
@@ -90,6 +102,8 @@ public class Activator implements BundleActivator {
 
 		}
 		System.out.println("[SIM]- STOPPED.");
+		
+		
 		
 	}
 

@@ -6,9 +6,6 @@ import java.util.Hashtable;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
-import sua.autonomouscar.context.interfaces.IDriverSleepingContext;
-import sua.autonomouscar.context.interfaces.IManosVolanteContext;
-
 import sua.autonomouscar.context.interfaces.IUbicacionDriverContext;
 import sua.autonomouscar.infrastructure.Thing;
 

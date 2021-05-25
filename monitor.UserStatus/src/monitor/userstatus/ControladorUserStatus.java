@@ -64,20 +64,31 @@ public class ControladorUserStatus extends Monitor implements ServiceListener{
 		case ServiceEvent.REGISTERED:
 			if(this.mirandoAlFrenteContext && this.manosVolanteContext && this.UbicacionDriverContext == 1) {
 				propertiesList.setUser_status_prop(EDriverAttention.Attentive);
-				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: user_status_prop=" + EDriverAttention.Attentive);	
+				propertiesList.setHandOnWheel(true);
+				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: user_status_prop=" + EDriverAttention.Attentive);
 			}else if(this.manosVolanteContext && this.UbicacionDriverContext == 1) {
 				propertiesList.setUser_status_prop(EDriverAttention.Hands_on_wheel);
+				propertiesList.setHandOnWheel(true);
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: user_status_prop=" + EDriverAttention.Hands_on_wheel);			
 					
-			}else if(!this.manosVolanteContext && !(this.UbicacionDriverContext == 1)) {
+			}else if(!this.manosVolanteContext && this.UbicacionDriverContext != 1) {
 				propertiesList.setUser_status_prop(EDriverAttention.Not_in_Driver_seat);
+				propertiesList.setHandOnWheel(false);
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: user_status_prop=" + EDriverAttention.Not_in_Driver_seat);			
+			
+			
 			}else if(!this.manosVolanteContext && this.UbicacionDriverContext == 1) {
 				propertiesList.setUser_status_prop(EDriverAttention.Not_hands_on_wheel);
+				propertiesList.setHandOnWheel(false);
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: user_status_prop=" + EDriverAttention.Not_hands_on_wheel);
+			
+			
 			}else if(this.driverSleepingContext && this.UbicacionDriverContext == 1) {
 				propertiesList.setUser_status_prop(EDriverAttention.Slept);
+				//y con manos en el volante.
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: user_status_prop=" + EDriverAttention.Slept);
+			
+			
 			}else if(!this.mirandoAlFrenteContext) {
 				propertiesList.setUser_status_prop(EDriverAttention.Not_Attentive);
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: user_status_prop=" + EDriverAttention.Not_Attentive);

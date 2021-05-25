@@ -16,10 +16,6 @@ public class ContextoADS extends Thing implements IADSContext{
 	protected Dictionary<String, Object> props = new Hashtable<String, Object>();
 	protected ServiceRegistration sr = null;
 	
-
-	
-	
-	
 	public ContextoADS(BundleContext context, String id) {
 		super(context, id);
 		this.addImplementedInterface(IADSContext.class.getName());

@@ -1,5 +1,8 @@
 package sua.autonomouscar.properties.interfaces;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+
 import sua.autonomouscar.interfaces.EAutonomousLevel;
 import sua.autonomouscar.interfaces.EDriverAttention;
 import sua.autonomouscar.interfaces.EDrivingMode;
@@ -22,6 +25,10 @@ public interface IProperty extends IIdentifiable{
 	public String getMaxAutonomyLevel();
 	public int getCurrentADSLevel();
 	public String getCurrentADSType();
+	public boolean getHandOnWheel();
+
+	public Dictionary<String, Object> getDevicesWorking();
+	
 	
 	public void setRoad_type_prop(ERoadType roadType);
 	public void setNivel_autonomia(EAutonomousLevel autonomLevel);
@@ -34,4 +41,7 @@ public interface IProperty extends IIdentifiable{
 	public void setMaxAutonomyLevel(String level);
 	public void setCurrentADSLevel_prop(int level);
 	public void setCurrentADSType_prop(String type);
+	public void setDevicesWorking(Dictionary<String, Object> devices);
+	public void setHandOnWheel(boolean handsOnWheel);
+
 }

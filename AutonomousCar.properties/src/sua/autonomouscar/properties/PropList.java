@@ -116,45 +116,68 @@ public class PropList extends Thing implements IProperty{
 		this._updateProps();
 	}
 
-	private void _updateProps() {
-		if ( this.sr != null )
-			this.sr.setProperties(this.props);
-	}
-
 	@Override
 	public String getMaxAutonomyLevel() {
-		return (String) this.props.get("max_autonomy_level");
+		return (String) this.props.get("max_autonomy_level_prop");
 	}
 
 	@Override
 	public void setMaxAutonomyLevel(String level) {
-		this.props.put("max_autonomy_level", level);
+		this.props.put("max_autonomy_level_prop", level);
 		this._updateProps();
 	}
 
 	@Override
 	public int getCurrentADSLevel() {
-		return (int) this.props.get("current_ADS_level");
+		return (int) this.props.get("current_ADS_level_prop");
 	}
 
 	@Override
 	public void setCurrentADSLevel_prop(int level) {
-		this.props.put("current_ADS_level", level);
+		this.props.put("current_ADS_level_prop", level);
 		this._updateProps();
 		
 	}
 
 	@Override
 	public String getCurrentADSType() {
-		return (String) this.props.get("current_ADS_type");
+		return (String) this.props.get("current_ADS_type_prop");
 	}
 
 	@Override
 	public void setCurrentADSType_prop(String type) {
-		this.props.put("current_ADS_type", type);
+		this.props.put("current_ADS_type_prop", type);
+		this._updateProps();		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Dictionary<String, Object> getDevicesWorking() {
+		return (Dictionary<String, Object>) this.props.get("devices_working_prop");
+	}
+
+	@Override
+	public void setDevicesWorking(Dictionary<String, Object> devices) {
+		this.props.put("devices_working_prop", devices);
+		this._updateProps();
+		
+	}
+
+	@Override
+	public boolean getHandOnWheel() {
+		return (boolean) this.props.get("hands_on_wheel_prop");
+	}
+
+	@Override
+	public void setHandOnWheel(boolean handsOnWheel) {
+		this.props.put("hands_on_wheel_prop", handsOnWheel);
 		this._updateProps();		
 	}
 	
+	private void _updateProps() {
+		if ( this.sr != null )
+			this.sr.setProperties(this.props);
+	}
 	
 }
 

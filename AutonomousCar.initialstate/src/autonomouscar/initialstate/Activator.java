@@ -1,5 +1,6 @@
 package autonomouscar.initialstate;
 
+import contexto.ads.ContextoADS;
 import java.util.Collection;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
-
+import sua.autonomouscar.context.interfaces.IADSContext;
 import sua.autonomouscar.devices.interfaces.IDistanceSensor;
 import sua.autonomouscar.driving.interfaces.IDrivingService;
 import sua.autonomouscar.driving.interfaces.IEmergencyFallbackPlan;
@@ -76,6 +77,11 @@ public class Activator implements BundleActivator {
 
 		IL0_ManualDriving theL0ManualDrivingService = OSGiUtils.getService(context, IL0_ManualDriving.class);
 		theL0ManualDrivingService.startDriving();
+		
+		
+		IADSContext currentADSLevel = OSGiUtils.getService(context, IADSContext.class);
+		currentADSLevel.setADSLevel(0);
+		currentADSLevel.setADSType(ContextoADS.MANUAL);
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {

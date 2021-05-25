@@ -20,6 +20,8 @@ public interface IProperty extends IIdentifiable{
 	public ESensorStatus getSensor_status_prop();
 	public int getUser_location_prop();
 	public String getMaxAutonomyLevel();
+	public int getCurrentADSLevel();
+	public String getCurrentADSType();
 	
 	public void setRoad_type_prop(ERoadType roadType);
 	public void setNivel_autonomia(EAutonomousLevel autonomLevel);
@@ -30,4 +32,6 @@ public interface IProperty extends IIdentifiable{
 	public void setSensor_status_prop(ESensorStatus sensorStatus);
 	public void setUser_location_prop(int location);
 	public void setMaxAutonomyLevel(String level);
+	public void setCurrentADSLevel_prop(int level);
+	public void setCurrentADSType_prop(String type);
 }

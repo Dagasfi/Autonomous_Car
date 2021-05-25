@@ -110,8 +110,11 @@ public class ControladorAutonomousLevel extends Monitor implements ServiceListen
 				//Funciona todo.
 				propertiesList.setMaxAutonomyLevel(PropList.LEVELAUTONOMY3);;
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: max_autonomy_level="+PropList.LEVELAUTONOMY3);			
-			
 			}
+			
+			propertiesList.setDevicesWorking(sensorWorking);
+			System.out.println("[Monitor] - Propiedad de adaptacion actualizada: devices_working="+sensorWorking);			
+
 			break;
 
 		default:

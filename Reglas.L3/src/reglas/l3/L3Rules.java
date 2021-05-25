@@ -1,6 +1,13 @@
 package reglas.l3;
 
 import contexto.ads.ContextoADS;
+
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map.Entry;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
@@ -12,13 +19,18 @@ import sua.autonomouscar.driving.interfaces.IL1_AssistedDriving;
 import sua.autonomouscar.driving.interfaces.IL2_AdaptiveCruiseControl;
 import sua.autonomouscar.driving.interfaces.IL2_LaneKeepingAssist;
 import sua.autonomouscar.driving.interfaces.IL3_CityChauffer;
+import sua.autonomouscar.driving.interfaces.IL3_DrivingService;
 import sua.autonomouscar.driving.interfaces.IL3_HighwayChauffer;
 import sua.autonomouscar.driving.interfaces.IL3_TrafficJamChauffer;
 import sua.autonomouscar.driving.interfaces.IParkInTheRoadShoulderFallbackPlan;
 import sua.autonomouscar.infrastructure.OSGiUtils;
 import sua.autonomouscar.infrastructure.rules.Rule;
+import sua.autonomouscar.interaction.interfaces.IInteractionMechanism;
+import sua.autonomouscar.interaction.interfaces.INotificationService;
+import sua.autonomouscar.interfaces.EDriverAttention;
 import sua.autonomouscar.interfaces.ERoadStatus;
 import sua.autonomouscar.interfaces.ERoadType;
+import sua.autonomouscar.interfaces.ESensorStatus;
 import sua.autonomouscar.properties.PropList;
 import sua.autonomouscar.properties.interfaces.IProperty;
 
@@ -26,15 +38,65 @@ public class L3Rules extends Rule implements ServiceListener{
 	
 	protected BundleContext context = null;
 	
+	
+	public static final String FRONTDS = "FrontDistanceSensor";
+	public static final String REARDS = "RearDistanceSensor";
+	public static final String LEFTDS = "LeftDistanceSensor";
+	public static final String RIGHTDS = "RightDistanceSensor";
+	public static final String FRONTLIDAR = "LIDAR-FrontDistanceSensor";
+	public static final String REARLIDAR = "LIDAR-RearDistanceSensor";
+	public static final String LEFTLIDAR = "LIDAR-LeftDistanceSensor";
+	public static final String RIGHTLIDAR = "LIDAR-RightDistanceSensor";
+	
+
+	
+	
 	ERoadType road_type_prop_prev = null;
 	ERoadStatus road_status_prop_prev = null;
-	String ADS_type_prev = null;
+	String ADSType_prev = null;
+	int currentAutLevel_prev = -1;
+	String maxAutLevel_prev = "" ;
+	Dictionary<String,Object> devicesWorkingMode_prev = null;
+	ESensorStatus sensor_status_prop_prev = null;
+	EDriverAttention user_status_prev = null;
+	int userLocation_prev = -1;
+	
+	List<String> notificationNotIntrusive = null;
+	List<String> notificationIntrusive = null;
 
+	
+	
 	public L3Rules(BundleContext context, String id) {
 		super(context, id);
 		this.context = context;
+		this.notificationNotIntrusive = new LinkedList<String>();
+		this.notificationIntrusive = new LinkedList<String>();
+		this.notificationNotIntrusive.add("SteeringWheel");
+		this.notificationNotIntrusive.add("DriverDisplay");
+
+		this.notificationNotIntrusive.add("DashboardIcon");
+		this.notificationNotIntrusive.add("DashboardDisplay");	
+		
+		this.notificationIntrusive.add("Speakers");
+		
+		this.notificationNotIntrusive.add("SteeringWheel");
+		this.notificationNotIntrusive.add("DriverSeat");
+		
+		
+
 	}
 
+	
+	private List<String> getBrokenDevice(Dictionary<String,Object> workingDevices) {
+		List<String> retorno = new LinkedList<String>();
+		for (Entry<String, Object> entry : ((Hashtable<String, Object>) workingDevices).entrySet()) {
+			if(!(boolean)entry.getValue()) {
+				retorno.add(entry.getKey());
+			}
+		}
+		return retorno;
+	}
+	
 	@Override
 	public void serviceChanged(ServiceEvent event) {
 		
@@ -42,24 +104,28 @@ public class L3Rules extends Rule implements ServiceListener{
 				
 		ERoadType road_type_prop = propertyList.getRoad_type_prop();
 		ERoadStatus road_status_prop = propertyList.getCongestion_prop();
-		
 		String maxAutLevel = propertyList.getMaxAutonomyLevel();
 		int currentAutLevel = propertyList.getCurrentADSLevel();
 		String ADSType = propertyList.getCurrentADSType();
+		EDriverAttention user_status = propertyList.getUser_status_prop();
+		int userLocation= propertyList.getUser_location_prop();
 		
-		// int localizacion =  propertyList.getUser_location_prop();
-
+		
+		Dictionary<String,Object> devicesWorkingMode = propertyList.getDevicesWorking();
+		ESensorStatus sensor_status_prop = propertyList.getSensor_status_prop();
 		
 		switch (event.getType()) {
 		case ServiceEvent.MODIFIED:
 		case ServiceEvent.REGISTERED:
 			
+			//REGLAS DE ADAPTACIÓN ADS.
+			
 			if(currentAutLevel == 3) {
 				// Comprobamos unicamente si ha cambiado el tipo de via. Sino estariamos 
 				// ejecutando la regla cada mínimo cambio en las propiedades.
 				if(road_type_prop_prev != road_type_prop
-						&&  road_type_prop == ERoadType.STD_ROAD
-						|| road_type_prop == ERoadType.OFF_ROAD) {
+						&&  (road_type_prop == ERoadType.STD_ROAD
+						|| road_type_prop == ERoadType.OFF_ROAD)) {
 					//REGLA DE ADAPTACION L3_1
 					System.out.println("[Reglas] - Efectuamos L3_1");
 					this.execute_L3_1(maxAutLevel);
@@ -69,13 +135,14 @@ public class L3Rules extends Rule implements ServiceListener{
 				
 				if(road_status_prop_prev == ERoadStatus.FLUID
 						&& road_status_prop == ERoadStatus.JAM
-						&& ADS_type_prev.equals(ContextoADS.HIGHWAY)
 						&& ADSType.equals(ContextoADS.HIGHWAY)) {
 					System.out.println("[Reglas] - Efectuamos L3_2");
 					this.execute_L3_2();
 				}
 				
-				if(ADS_type_prev.equals(ContextoADS.HIGHWAY) && ADSType.equals(ContextoADS.CITY)) {
+				if(ADSType_prev.equals(ContextoADS.HIGHWAY)
+						&& ADSType.equals(ContextoADS.CITY)
+						&& road_status_prop == ERoadStatus.FLUID) {
 					//ESTANDO EN HIGHWAY, PASAMOS A CITY.
 					this.execute_L3_3();
 				}
@@ -91,7 +158,7 @@ public class L3Rules extends Rule implements ServiceListener{
 				
 				if(ADSType.equals(ContextoADS.JAM)
 						&& road_type_prop_prev.equals(ERoadType.HIGHWAY)
-						&& road_status_prop_prev.equals(ERoadStatus.JAM)
+						&& road_status_prop.equals(ERoadStatus.JAM)
 						&& road_type_prop.equals(ERoadType.CITY)) {
 					this.execute_L3_5();
 				}
@@ -104,7 +171,60 @@ public class L3Rules extends Rule implements ServiceListener{
 				}
 				
 				
+				// REGLAS DE ADAPTACIÓN PARA SERVICIOS
+				
+				if(!sensor_status_prop.equals(ESensorStatus.OK)) {
+					// SI NO ESTA TODO OK, ACTUAMOS.
+					this.execute_L3_7(ADSType, sensor_status_prop, road_type_prop);
+				}
+				
+				// REGLAS PARA LAS INTERACCIONES
+				
+				
+				if(user_status_prev != user_status) {
+					switch (user_status) {
+					case Attentive:
+						// Esta atento, manos en volante y en el asiento.
+						this.execute_Interact_1_atentive(ADSType);
+						this.activate_seatVibration("Driver");
+						this.activate_wheelVibration();
+						break;
+					case Slept:
+						this.execute_Interact_1_slept(ADSType);
+						this.activate_seatVibration("Driver");
+						this.activate_wheelVibration();
+						break;
+					case Not_Attentive:
+						this.execute_Interact_1_no_frente(ADSType);
+						this.activate_seatVibration("Driver");
+						this.activate_wheelVibration();
+						// Interact 1 _ no frente
+						// SI CONDUCTOR, SI WHEEL
+						break;
+					case Hands_on_wheel:
+						this.activate_wheelVibration();
+						this.activate_seatVibration("Driver");
+						//SI CONDUCTOR, SI WHEEL
+						break;
+					case Not_hands_on_wheel:
+						this.deactivate_wheelVibration();
+						this.activate_seatVibration("Driver");
+						// SI CONDUCTOR, NO WHEEL
+						break;
+					case Not_in_Driver_seat:
+						this.deactivate_seatVibration("Driver");
+						this.deactivate_wheelVibration();
+						// NO CONDUCTOR, NO WHEEL
+						break;
+					default:
+						break;
+					}
+					
+				}
+				
 			}
+			
+			
 			
 			System.out.println("[Reglas] - Regla de adaptación=" + "");			
 			break;
@@ -112,11 +232,167 @@ public class L3Rules extends Rule implements ServiceListener{
 			break;
 		}
 		
+		/**
+		 * Actualizamos las propiedades en este punto de tiempo para poder
+		 * consultar los cambios relevantes.
+		 */
 		road_type_prop_prev = road_type_prop;
 		road_status_prop_prev = road_status_prop;
+		ADSType_prev = ADSType;
+		currentAutLevel_prev = currentAutLevel;
+		maxAutLevel_prev = maxAutLevel;
+		devicesWorkingMode_prev = devicesWorkingMode;
+		sensor_status_prop_prev = sensor_status_prop;
+	}
+	
+
+	private void activate_wheelVibration() {
+		INotificationService notificationService = OSGiUtils.getService(context, INotificationService.class);
+		if(!notificationService.getMechanisms().contains("SteeringWheel_HapticVibration")){
+			notificationService.getMechanisms().add("SteeringWheel_HapticVibration");
+		}
+	}
+	
+	private void activate_seatVibration(String type) {
+		INotificationService notificationService = OSGiUtils.getService(context, INotificationService.class);
+		if(!notificationService.getMechanisms().contains(type + "Seat_HapticVibration")){
+			notificationService.getMechanisms().add(type + "Seat_HapticVibration");
+		}
+	}
+	
+	private void deactivate_wheelVibration() {
+		INotificationService notificationService = OSGiUtils.getService(context, INotificationService.class);
+		if(notificationService.getMechanisms().contains("SteeringWheel_HapticVibration")){
+			notificationService.getMechanisms().remove("SteeringWheel_HapticVibration");
+		}
+	}
+	
+	private void deactivate_seatVibration(String type) {
+		INotificationService notificationService = OSGiUtils.getService(context, INotificationService.class);
+		if(notificationService.getMechanisms().contains(type + "Seat_HapticVibration")){
+			notificationService.getMechanisms().remove(type + "Seat_HapticVibration");
+		}
 	}
 	
 	
+	private void execute_Interact_1_atentive(String ADSType) {
+		IL3_DrivingService il3_drivingService = null;
+		if(ADSType.equals(ContextoADS.JAM)) {
+			il3_drivingService =  OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);
+		}else if(ADSType.equals(ContextoADS.CITY)) {
+			il3_drivingService =  OSGiUtils.getService(context, IL3_CityChauffer.class);
+		}else if(ADSType.equals(ContextoADS.HIGHWAY)) {
+			il3_drivingService =  OSGiUtils.getService(context, IL3_HighwayChauffer.class);
+		}	
+		INotificationService notificationService = OSGiUtils.getService(context, INotificationService.class);
+		List<IInteractionMechanism> mechanisms = OSGiUtils.getServices(context, IInteractionMechanism.class);
+		if ( mechanisms != null && mechanisms.size() > 0 ) {
+			
+			for(IInteractionMechanism m : mechanisms) {
+				if(!m.equals("DriverDisplay_VisualText")
+						|| !m.equals("SteeringWheel_HapticVibration")
+						|| !m.equals("DriverDisplay_VisualIcon")) {
+					notificationService.removeInteractionMechanism(m.getId());
+					
+				}
+			}
+			if(!notificationService.getMechanisms().contains("DriverDisplay_VisualText")) {
+				notificationService.addInteractionMechanism("DriverDisplay_VisualText");
+			}
+			if(!notificationService.getMechanisms().contains("SteeringWheel_HapticVibration")) {
+				notificationService.addInteractionMechanism("SteeringWheel_HapticVibration");
+			}
+			if(!notificationService.getMechanisms().contains("DriverDisplay_VisualIcon")) {
+				notificationService.addInteractionMechanism("DriverDisplay_VisualIcon");
+			}
+		}
+		il3_drivingService.setNotificationService(notificationService.getId());
+	}
+	
+	private void execute_Interact_1_slept(String ADSType) {
+		IL3_DrivingService il3_drivingService = null;
+		if(ADSType.equals(ContextoADS.JAM)) {
+			il3_drivingService =  OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);
+		}else if(ADSType.equals(ContextoADS.CITY)) {
+			il3_drivingService =  OSGiUtils.getService(context, IL3_CityChauffer.class);
+		}else if(ADSType.equals(ContextoADS.HIGHWAY)) {
+			il3_drivingService =  OSGiUtils.getService(context, IL3_HighwayChauffer.class);
+		}	
+		INotificationService notificationService = OSGiUtils.getService(context, INotificationService.class);
+		List<IInteractionMechanism> mechanisms = OSGiUtils.getServices(context, IInteractionMechanism.class);
+		if ( mechanisms != null && mechanisms.size() > 0 ) {			
+			for(IInteractionMechanism m : mechanisms) {
+				if(!m.equals("Speakers_AuditoryBeep")
+						|| !m.equals("Speakers_AuditorySound")
+						|| !m.equals("SteeringWheel_HapticVibration")
+						|| !m.equals("DriverSeat_HapticVibration")) {
+					
+					notificationService.removeInteractionMechanism(m.getId());
+				}
+			}
+			if(!notificationService.getMechanisms().contains("Speakers_AuditoryBeep")) {
+				notificationService.addInteractionMechanism("Speakers_AuditoryBeep");
+			}
+			if(!notificationService.getMechanisms().contains("Speakers_AuditorySound")) {
+				notificationService.addInteractionMechanism("Speakers_AuditorySound");
+			}
+			if(!notificationService.getMechanisms().contains("SteeringWheel_HapticVibration")) {
+				notificationService.addInteractionMechanism("SteeringWheel_HapticVibration");
+			}
+			if(!notificationService.getMechanisms().contains("DriverSeat_HapticVibration")) {
+				notificationService.addInteractionMechanism("DriverSeat_HapticVibration");
+			}
+		}
+		il3_drivingService.setNotificationService(notificationService.getId());
+	}
+	
+	private void execute_Interact_1_no_frente(String ADSType) {
+		IL3_DrivingService il3_drivingService = null;
+		if(ADSType.equals(ContextoADS.JAM)) {
+			il3_drivingService =  OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);
+		}else if(ADSType.equals(ContextoADS.CITY)) {
+			il3_drivingService =  OSGiUtils.getService(context, IL3_CityChauffer.class);
+		}else if(ADSType.equals(ContextoADS.HIGHWAY)) {
+			il3_drivingService =  OSGiUtils.getService(context, IL3_HighwayChauffer.class);
+		}	
+		INotificationService notificationService = OSGiUtils.getService(context, INotificationService.class);
+		List<IInteractionMechanism> mechanisms = OSGiUtils.getServices(context, IInteractionMechanism.class);
+		if ( mechanisms != null && mechanisms.size() > 0 ) {
+			
+			for(IInteractionMechanism m : mechanisms) {
+				if(!m.equals("Speakers_AuditoryBeep")
+						|| !m.equals("Speakers_AuditorySound")
+						|| !m.equals("SteeringWheel_HapticVibration")
+						|| !m.equals("DashboardDisplay_VisualText")
+						|| !m.equals("DashboardDisplay_VisualIcon")
+						|| !m.equals("Dashboard_VisualIcon")) {
+					notificationService.removeInteractionMechanism(m.getId());
+					
+				}
+			}
+			if(!notificationService.getMechanisms().contains("Speakers_AuditoryBeep")) {
+				notificationService.addInteractionMechanism("Speakers_AuditoryBeep");
+			}
+			if(!notificationService.getMechanisms().contains("Speakers_AuditorySound")) {
+				notificationService.addInteractionMechanism("Speakers_AuditorySound");
+			}
+			if(!notificationService.getMechanisms().contains("SteeringWheel_HapticVibration")) {
+				notificationService.addInteractionMechanism("SteeringWheel_HapticVibration");
+			}
+			if(!notificationService.getMechanisms().contains("DashboardDisplay_VisualText")) {
+				notificationService.addInteractionMechanism("DashboardDisplay_VisualText");
+			}
+			if(!notificationService.getMechanisms().contains("DashboardDisplay_VisualIcon")) {
+				notificationService.addInteractionMechanism("DashboardDisplay_VisualIcon");
+			}
+			if(!notificationService.getMechanisms().contains("Dashboard_VisualIcon")) {
+				notificationService.addInteractionMechanism("Dashboard_VisualIcon");
+			}
+		}
+		il3_drivingService.setNotificationService(notificationService.getId());
+	}
+
+
 	private void execute_L3_1(String maxAutLevel) {
 		IL1_AssistedDriving theL1AssistedDrivingService = OSGiUtils.getService(context, IL1_AssistedDriving.class);
 		IL2_LaneKeepingAssist theL2LaneKeepingAssistService = OSGiUtils.getService(context, IL2_LaneKeepingAssist.class);
@@ -157,7 +433,6 @@ public class L3Rules extends Rule implements ServiceListener{
 			theL0ManualDrivingService.startDriving();
 			currentADSLevel.setADSLevel(0);
 			currentADSLevel.setADSType(ContextoADS.MANUAL);
-
 		}
 	}
 
@@ -188,20 +463,104 @@ public class L3Rules extends Rule implements ServiceListener{
 	}
 	
 	private void execute_L3_4() {
-		return;
+		IL3_HighwayChauffer theL3HighwayChaufferService = OSGiUtils.getService(context, IL3_HighwayChauffer.class);
+		IL3_TrafficJamChauffer theL3TrafficJamChaufferService = OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);
+
+		IADSContext currentADSLevel = OSGiUtils.getService(context, IADSContext.class);
+
+		theL3TrafficJamChaufferService.stopDriving();
+
+		theL3HighwayChaufferService.startDriving();
+		currentADSLevel.setADSLevel(3);
+		currentADSLevel.setADSType(ContextoADS.HIGHWAY);
 	}
 	
 	private void execute_L3_5() {
-		return;
+		IL3_CityChauffer theL3CityChaufferService = OSGiUtils.getService(context, IL3_CityChauffer.class);
+		IL3_TrafficJamChauffer theL3TrafficJamChaufferService = OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);
+
+		IADSContext currentADSLevel = OSGiUtils.getService(context, IADSContext.class);
+
+		theL3TrafficJamChaufferService.stopDriving();
+
+		theL3CityChaufferService.startDriving();
+		currentADSLevel.setADSLevel(3);
+		currentADSLevel.setADSType(ContextoADS.HIGHWAY);
 	}
 	
 	private void execute_L3_6(ERoadStatus roadStatus) {
-		if(roadStatus.equals(ERoadStatus.FLUID)) {
-			//Debe activar L3_HIGHWAYCHAUFFER
-		}else if(roadStatus.equals(ERoadStatus.JAM)) {
-			//Debe activar L3_JAMCHAUFFER
+		
+		IL3_HighwayChauffer theL3HighwayChaufferService = OSGiUtils.getService(context, IL3_HighwayChauffer.class);
+		IL3_CityChauffer theL3CityChaufferService = OSGiUtils.getService(context, IL3_CityChauffer.class);
+		IL3_TrafficJamChauffer theL3TrafficJamChaufferService = OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);
 
+		IADSContext currentADSLevel = OSGiUtils.getService(context, IADSContext.class);
+
+		theL3CityChaufferService.stopDriving();
+		
+		if(roadStatus.equals(ERoadStatus.FLUID)) {
+			theL3HighwayChaufferService.startDriving();
+			currentADSLevel.setADSLevel(3);
+			currentADSLevel.setADSType(ContextoADS.HIGHWAY);
+		}else if(roadStatus.equals(ERoadStatus.JAM)) {
+			theL3TrafficJamChaufferService.startDriving();
+			currentADSLevel.setADSLevel(3);
+			currentADSLevel.setADSType(ContextoADS.JAM);
 		}
+	}
+	
+	private void changeLidarSensors(IL3_DrivingService il3_drivingService) {
+		//Cambiamos los lidar por DistanceSensors.
+		il3_drivingService.setFrontDistanceSensor(this.FRONTDS);
+		il3_drivingService.setRearDistanceSensor(this.REARDS);
+		il3_drivingService.setLeftDistanceSensor(this.LEFTDS);
+		il3_drivingService.setRightDistanceSensor(this.RIGHTDS);
+	}
+	
+	private void changeDistanceSensors(IL3_DrivingService il3_drivingService) {
+		il3_drivingService.setFrontDistanceSensor(this.FRONTLIDAR);
+		il3_drivingService.setRearDistanceSensor(this.REARLIDAR);
+		il3_drivingService.setLeftDistanceSensor(this.LEFTLIDAR);
+		il3_drivingService.setRightDistanceSensor(this.RIGHTLIDAR);
+	}
+	private void executeFallbackPlan(IL3_DrivingService il3_drivingService, ERoadType road_type_prop) {
+		
+		IEmergencyFallbackPlan theEmergencyFallbackPlan = OSGiUtils.getService(context, IEmergencyFallbackPlan.class);
+		IParkInTheRoadShoulderFallbackPlan theParkInTheRoadShoulderFallbackPlan = OSGiUtils.getService(context, IParkInTheRoadShoulderFallbackPlan.class);
+		// Park in the roadshoulder -- debe ser STD o Highway.
+		if(road_type_prop.equals(ERoadType.HIGHWAY) 
+				|| road_type_prop.equals(ERoadType.STD_ROAD) ) {
+			il3_drivingService.setFallbackPlan(theParkInTheRoadShoulderFallbackPlan.getId());
+			il3_drivingService.stopDriving();
+			theParkInTheRoadShoulderFallbackPlan.startDriving();
+		}else {
+			il3_drivingService.setFallbackPlan(theEmergencyFallbackPlan.getId());
+			il3_drivingService.stopDriving();
+			theEmergencyFallbackPlan.startDriving();
+		}
+	}
+	
+	private void execute_L3_7(String ADSType, ESensorStatus errorType, ERoadType road_type_prop) {
+		IL3_DrivingService il3_drivingService = null;
+		if(ADSType.equals(ContextoADS.JAM)) {
+			il3_drivingService =  OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);
+		}else if(ADSType.equals(ContextoADS.CITY)) {
+			il3_drivingService =  OSGiUtils.getService(context, IL3_CityChauffer.class);
+		}else if(ADSType.equals(ContextoADS.HIGHWAY)) {
+			il3_drivingService =  OSGiUtils.getService(context, IL3_HighwayChauffer.class);
+		}	
+		
+		if(errorType.equals(ESensorStatus.No_Distance_Sensor)) {
+			//No se pueden cambiar los sensores.
+			executeFallbackPlan(il3_drivingService, road_type_prop);
+		}else {
+			if(errorType.equals(ESensorStatus.Lidar_error)) {
+				//ERROR DE LIDAR, CAMBIAMOS.
+				this.changeLidarSensors(il3_drivingService);
+			}else if(errorType.equals(ESensorStatus.Distance_sensor_error)) {
+				this.changeDistanceSensors(il3_drivingService);
+			}
+		}	
 	}
 	
 	

@@ -56,7 +56,7 @@ public class L3Rules extends Rule implements ServiceListener{
 			
 			if(currentAutLevel == 3) {
 				// Comprobamos unicamente si ha cambiado el tipo de via. Sino estariamos 
-				// ejecutando la regla cada mínimo cambio en las propiedades.
+				// ejecutando la regla cada mÃ­nimo cambio en las propiedades.
 				if(road_type_prop_prev != road_type_prop
 						&&  road_type_prop == ERoadType.STD_ROAD
 						|| road_type_prop == ERoadType.OFF_ROAD) {
@@ -79,9 +79,34 @@ public class L3Rules extends Rule implements ServiceListener{
 					//ESTANDO EN HIGHWAY, PASAMOS A CITY.
 					this.execute_L3_3();
 				}
+				
+				
+				if(ADSType.equals(ContextoADS.JAM)
+						&& road_type_prop.equals(ERoadType.HIGHWAY)
+						&& road_status_prop_prev.equals(ERoadStatus.JAM)
+						&& road_status_prop.equals(ERoadStatus.FLUID)) {
+					//ESTANDO EN TrafficJAM y estando la carretera congestionada, se descongesitona
+					this.execute_L3_4();
+				}
+				
+				if(ADSType.equals(ContextoADS.JAM)
+						&& road_type_prop_prev.equals(ERoadType.HIGHWAY)
+						&& road_status_prop_prev.equals(ERoadStatus.JAM)
+						&& road_type_prop.equals(ERoadType.CITY)) {
+					this.execute_L3_5();
+				}
+				
+				if(ADSType.equals(ContextoADS.CITY)
+						&& road_type_prop_prev.equals(ERoadType.CITY)
+						&& road_type_prop.equals(ERoadType.HIGHWAY)) {
+					// ACTIVAMOS Trafic jam o highway, al salir de la ciudad.
+					this.execute_L3_6(road_status_prop);
+				}
+				
+				
 			}
 			
-			System.out.println("[Reglas] - Regla de adaptación=" + "");			
+			System.out.println("[Reglas] - Regla de adaptaciÃ³n=" + "");			
 			break;
 		default:
 			break;
@@ -137,35 +162,48 @@ public class L3Rules extends Rule implements ServiceListener{
 	}
 
 	private void execute_L3_2() {
-		
 		IL3_HighwayChauffer theL3HighwayChaufferService = OSGiUtils.getService(context, IL3_HighwayChauffer.class);
 		IL3_TrafficJamChauffer theL3TrafficJamChaufferService = OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);
-		
+
 		IADSContext currentADSLevel = OSGiUtils.getService(context, IADSContext.class);
-		
+
 		theL3HighwayChaufferService.stopDriving();
-		
+
 		theL3TrafficJamChaufferService.startDriving();
 		currentADSLevel.setADSLevel(3);
 		currentADSLevel.setADSType(ContextoADS.JAM);
-		
-		return;
 	}
-	
+
 	private void execute_L3_3() {
-		
 		IL3_HighwayChauffer theL3HighwayChaufferService = OSGiUtils.getService(context, IL3_HighwayChauffer.class);
 		IL3_CityChauffer theL3CityChaufferService = OSGiUtils.getService(context, IL3_CityChauffer.class);
-		
+
 		IADSContext currentADSLevel = OSGiUtils.getService(context, IADSContext.class);
-		
+
 		theL3HighwayChaufferService.stopDriving();
-		
+
 		theL3CityChaufferService.startDriving();
 		currentADSLevel.setADSLevel(3);
 		currentADSLevel.setADSType(ContextoADS.CITY);
-		
+	}
+	
+	private void execute_L3_4() {
 		return;
 	}
+	
+	private void execute_L3_5() {
+
+		return;
+	}
+	
+	private void execute_L3_6(ERoadStatus roadStatus) {
+		if(roadStatus.equals(ERoadStatus.FLUID)) {
+			//Debe activar L3_HIGHWAYCHAUFFER
+		}else if(roadStatus.equals(ERoadStatus.JAM)) {
+			//Debe activar L3_JAMCHAUFFER
+
+		}
+	}
+	
 	
 }

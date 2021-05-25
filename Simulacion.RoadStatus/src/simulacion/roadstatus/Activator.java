@@ -7,6 +7,9 @@ import org.osgi.framework.ServiceReference;
 import sua.autonomouscar.context.interfaces.ICongestionContext;
 import sua.autonomouscar.context.interfaces.IDistanceSensorContext;
 import sua.autonomouscar.context.interfaces.IDriverSleepingContext;
+import sua.autonomouscar.context.interfaces.IManosVolanteContext;
+import sua.autonomouscar.context.interfaces.IMirandoAlFrente;
+import sua.autonomouscar.context.interfaces.IUbicacionDriverContext;
 import sua.autonomouscar.interfaces.ERoadStatus;
 
 public class Activator implements BundleActivator {
@@ -48,6 +51,42 @@ public class Activator implements BundleActivator {
 			contextoDriverSleeping = (IDriverSleepingContext) this.context.getService(ref4);
 			contextoDriverSleeping.setDriverSleeping(false);;	
 			System.out.println("[SIM] - DRIVER SLEEPING TO False!!!");
+
+		}
+		
+		IMirandoAlFrente contextoMirandoAlFrente= null;
+		ServiceReference ref5 = (ServiceReference)this.context.getServiceReference(IMirandoAlFrente.class);
+		
+		System.out.println("\n"+ this.context.getAllServiceReferences(IMirandoAlFrente.class.getName(), null) +"\n");
+		if(ref5 != null) {
+			System.out.println("[SIM] - Mirando Al Frente TO true!!!");
+			contextoMirandoAlFrente = (IMirandoAlFrente) this.context.getService(ref5);
+			contextoMirandoAlFrente.setMirandoAlFrente(true);	
+			System.out.println("[SIM] - Mirando Al Frente TO true!!!");
+
+		}
+		
+		IUbicacionDriverContext contextoUbicacionDriver = null;
+		ServiceReference ref6 = (ServiceReference)this.context.getServiceReference(IUbicacionDriverContext.class);
+		
+		System.out.println("\n"+ this.context.getAllServiceReferences(IUbicacionDriverContext.class.getName(), null) +"\n");
+		if(ref6 != null) {
+			System.out.println("[SIM] - Ubicacion Driver TO 1!!!");
+			contextoUbicacionDriver = (IUbicacionDriverContext) this.context.getService(ref6);
+			contextoUbicacionDriver.setUbicacionDriver(1);	
+			System.out.println("[SIM] - Ubicacion Driver TO 1!!!");
+
+		}
+		
+		IManosVolanteContext contextoManosVolanteContext = null;
+		ServiceReference ref7 = (ServiceReference)this.context.getServiceReference(IManosVolanteContext.class);
+		
+		System.out.println("\n"+ this.context.getAllServiceReferences(IManosVolanteContext.class.getName(), null) +"\n");
+		if(ref7 != null) {
+			System.out.println("[SIM] - Manos Volante TO True!!!");
+			contextoManosVolanteContext = (IManosVolanteContext) this.context.getService(ref7);
+			contextoManosVolanteContext.setManosVolante(true);	
+			System.out.println("[SIM] - Manos Volante TO True!!!");
 
 		}
 		System.out.println("[SIM]- STOPPED.");

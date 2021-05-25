@@ -18,7 +18,7 @@ public class ContextoManosVolante extends Thing implements IManosVolanteContext{
 
 	public ContextoManosVolante(BundleContext context, String id) {
 		super(context, id);
-		this.addImplementedInterface(IDriverSleepingContext.class.getName());
+		this.addImplementedInterface(IManosVolanteContext.class.getName());
 		this.props.put("id", id);
 		this.context = context;
 		this.setManosVolante(false);

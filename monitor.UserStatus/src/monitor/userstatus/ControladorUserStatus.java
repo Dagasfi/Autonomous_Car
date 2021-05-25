@@ -7,6 +7,7 @@ import org.osgi.framework.ServiceReference;
 
 import sua.autonomouscar.context.interfaces.IDriverSleepingContext;
 import sua.autonomouscar.context.interfaces.IManosVolanteContext;
+import sua.autonomouscar.context.interfaces.IMirandoAlFrente;
 import sua.autonomouscar.context.interfaces.IUbicacionDriverContext;
 import sua.autonomouscar.infrastructure.monitors.Monitor;
 import sua.autonomouscar.properties.PropList;
@@ -20,6 +21,7 @@ public class ControladorUserStatus extends Monitor implements ServiceListener{
 	
 	private boolean manosVolanteContext = false;
 	private boolean driverSleepingContext = false;
+	private boolean mirandoAlFrenteContext = false;
 	private int UbicacionDriverContext = 0;
 
 	public ControladorUserStatus(BundleContext context, String id) {
@@ -44,6 +46,10 @@ public class ControladorUserStatus extends Monitor implements ServiceListener{
 			System.out.println("Es de UbicacionDriverContext");
 			IUbicacionDriverContext UbicacionDriverContext = (IUbicacionDriverContext)  this.context.getService(event.getServiceReference());
 			this.UbicacionDriverContext = UbicacionDriverContext.getUbicacionDriver();
+		}else if(service instanceof IMirandoAlFrente) {
+			System.out.println("Es de MirandoAlFrente");
+			IMirandoAlFrente mirandoAlFrenteContext = (IMirandoAlFrente)  this.context.getService(event.getServiceReference());
+			this.mirandoAlFrenteContext = mirandoAlFrenteContext.isMirandoAlFrente();
 		}
 		
 		ServiceReference ref = this.context.getServiceReference(IProperty.class.getName());
@@ -56,7 +62,7 @@ public class ControladorUserStatus extends Monitor implements ServiceListener{
 		switch (event.getType()) {
 		case ServiceEvent.MODIFIED:
 		case ServiceEvent.REGISTERED:
-			if(!this.driverSleepingContext && this.manosVolanteContext && this.UbicacionDriverContext == 1) {
+			if(this.mirandoAlFrenteContext && this.manosVolanteContext && this.UbicacionDriverContext == 1) {
 				propertiesList.setUser_status_prop(EDriverAttention.Attentive);
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: user_status_prop=" + EDriverAttention.Attentive);	
 			}else if(this.manosVolanteContext && this.UbicacionDriverContext == 1) {
@@ -72,7 +78,7 @@ public class ControladorUserStatus extends Monitor implements ServiceListener{
 			}else if(this.driverSleepingContext && this.UbicacionDriverContext == 1) {
 				propertiesList.setUser_status_prop(EDriverAttention.Slept);
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: user_status_prop=" + EDriverAttention.Slept);
-			}else if(this.driverSleepingContext) {
+			}else if(!this.mirandoAlFrenteContext) {
 				propertiesList.setUser_status_prop(EDriverAttention.Not_Attentive);
 				System.out.println("[Monitor] - Propiedad de adaptacion actualizada: user_status_prop=" + EDriverAttention.Not_Attentive);
 			}

@@ -20,7 +20,7 @@ public class ContextoDriverSleeping extends Thing implements IDriverSleepingCont
 		this.addImplementedInterface(IDriverSleepingContext.class.getName());
 		this.props.put("id", id);
 		this.context = context;
-		this.setDriverSleeping(true);
+		this.setDriverSleeping(false);
 		this.sr = this.context.registerService(IDriverSleepingContext.class, this, props);
 	}
 

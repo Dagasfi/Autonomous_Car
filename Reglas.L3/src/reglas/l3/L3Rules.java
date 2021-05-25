@@ -118,11 +118,11 @@ public class L3Rules extends Rule implements ServiceListener{
 		case ServiceEvent.MODIFIED:
 		case ServiceEvent.REGISTERED:
 			
-			//REGLAS DE ADAPTACIÓN ADS.
+			//REGLAS DE ADAPTACIï¿½N ADS.
 			
 			if(currentAutLevel == 3) {
 				// Comprobamos unicamente si ha cambiado el tipo de via. Sino estariamos 
-				// ejecutando la regla cada mínimo cambio en las propiedades.
+				// ejecutando la regla cada mÃ­nimo cambio en las propiedades.
 				if(road_type_prop_prev != road_type_prop
 						&&  (road_type_prop == ERoadType.STD_ROAD
 						|| road_type_prop == ERoadType.OFF_ROAD)) {
@@ -171,7 +171,7 @@ public class L3Rules extends Rule implements ServiceListener{
 				}
 				
 				
-				// REGLAS DE ADAPTACIÓN PARA SERVICIOS
+				// REGLAS DE ADAPTACIï¿½N PARA SERVICIOS
 				
 				if(!sensor_status_prop.equals(ESensorStatus.OK)) {
 					// SI NO ESTA TODO OK, ACTUAMOS.
@@ -224,9 +224,8 @@ public class L3Rules extends Rule implements ServiceListener{
 				
 			}
 			
-			
-			
-			System.out.println("[Reglas] - Regla de adaptación=" + "");			
+
+			System.out.println("[Reglas] - Regla de adaptaciÃ³n=" + "");			
 			break;
 		default:
 			break;
@@ -486,6 +485,7 @@ public class L3Rules extends Rule implements ServiceListener{
 		theL3CityChaufferService.startDriving();
 		currentADSLevel.setADSLevel(3);
 		currentADSLevel.setADSType(ContextoADS.HIGHWAY);
+
 	}
 	
 	private void execute_L3_6(ERoadStatus roadStatus) {

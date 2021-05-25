@@ -16,3 +16,4 @@ Import-Package: sua.autonomouscar.context.interfaces,
  sua.autonomouscar.infrastructure
 Require-Bundle: org.eclipse.osgi,
  AutonomousCar.interfaces
+Import-Package: org.osgi.framework

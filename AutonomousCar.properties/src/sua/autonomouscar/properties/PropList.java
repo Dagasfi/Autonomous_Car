@@ -131,6 +131,29 @@ public class PropList extends Thing implements IProperty{
 		this.props.put("max_autonomy_level", level);
 		this._updateProps();
 	}
+
+	@Override
+	public int getCurrentADSLevel() {
+		return (int) this.props.get("current_ADS_level");
+	}
+
+	@Override
+	public void setCurrentADSLevel_prop(int level) {
+		this.props.put("current_ADS_level", level);
+		this._updateProps();
+		
+	}
+
+	@Override
+	public String getCurrentADSType() {
+		return (String) this.props.get("current_ADS_type");
+	}
+
+	@Override
+	public void setCurrentADSType_prop(String type) {
+		this.props.put("current_ADS_type", type);
+		this._updateProps();		
+	}
 	
 	
 }

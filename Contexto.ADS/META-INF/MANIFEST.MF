@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ADS
+Bundle-SymbolicName: Contexto.ADS
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: contexto.ads.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: org.osgi.framework;version="1.3.0",
+ sua.autonomouscar.context.interfaces,
+ sua.autonomouscar.infrastructure
+Automatic-Module-Name: Contexto.ADS
+Export-Package: contexto.ads

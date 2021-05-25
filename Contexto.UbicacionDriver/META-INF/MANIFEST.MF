@@ -9,3 +9,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Import-Package: org.osgi.framework,
  sua.autonomouscar.context.interfaces,
  sua.autonomouscar.infrastructure
+Import-Package: sua.autonomouscar.context.interfaces
+Import-Package: org.osgi.framework

@@ -9,3 +9,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Import-Package: org.osgi.framework,
  sua.autonomouscar.context.interfaces,
  sua.autonomouscar.infrastructure
+Import-Package: sua.autonomouscar.context.interfaces,
+ sua.autonomouscar.infrastructure
+Bundle-Activator: contexto.ubicaciondriver.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: sua.autonomouscar.context.interfaces
+Require-Bundle: org.eclipse.osgi,
+ AutonomousCar.interfaces

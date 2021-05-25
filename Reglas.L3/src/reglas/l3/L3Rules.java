@@ -79,6 +79,31 @@ public class L3Rules extends Rule implements ServiceListener{
 					//ESTANDO EN HIGHWAY, PASAMOS A CITY.
 					this.execute_L3_3();
 				}
+				
+				
+				if(ADSType.equals(ContextoADS.JAM)
+						&& road_type_prop.equals(ERoadType.HIGHWAY)
+						&& road_status_prop_prev.equals(ERoadStatus.JAM)
+						&& road_status_prop.equals(ERoadStatus.FLUID)) {
+					//ESTANDO EN TrafficJAM y estando la carretera congestionada, se descongesitona
+					this.execute_L3_4();
+				}
+				
+				if(ADSType.equals(ContextoADS.JAM)
+						&& road_type_prop_prev.equals(ERoadType.HIGHWAY)
+						&& road_status_prop_prev.equals(ERoadStatus.JAM)
+						&& road_type_prop.equals(ERoadType.CITY)) {
+					this.execute_L3_5();
+				}
+				
+				if(ADSType.equals(ContextoADS.CITY)
+						&& road_type_prop_prev.equals(ERoadType.CITY)
+						&& road_type_prop.equals(ERoadType.HIGHWAY)) {
+					// ACTIVAMOS Trafic jam o highway, al salir de la ciudad.
+					this.execute_L3_6(road_status_prop);
+				}
+				
+				
 			}
 			
 			System.out.println("[Reglas] - Regla de adaptación=" + "");			
@@ -139,9 +164,27 @@ public class L3Rules extends Rule implements ServiceListener{
 	private void execute_L3_2() {
 		return;
 	}
-	
+
 	private void execute_L3_3() {
 		return;
 	}
+	
+	private void execute_L3_4() {
+		return;
+	}
+	
+	private void execute_L3_5() {
+		return;
+	}
+	
+	private void execute_L3_6(ERoadStatus roadStatus) {
+		if(roadStatus.equals(ERoadStatus.FLUID)) {
+			//Debe activar L3_HIGHWAYCHAUFFER
+		}else if(roadStatus.equals(ERoadStatus.JAM)) {
+			//Debe activar L3_JAMCHAUFFER
+
+		}
+	}
+	
 	
 }

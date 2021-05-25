@@ -162,11 +162,29 @@ public class L3Rules extends Rule implements ServiceListener{
 	}
 
 	private void execute_L3_2() {
-		return;
+		IL3_HighwayChauffer theL3HighwayChaufferService = OSGiUtils.getService(context, IL3_HighwayChauffer.class);
+		IL3_TrafficJamChauffer theL3TrafficJamChaufferService = OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);
+
+		IADSContext currentADSLevel = OSGiUtils.getService(context, IADSContext.class);
+
+		theL3HighwayChaufferService.stopDriving();
+
+		theL3TrafficJamChaufferService.startDriving();
+		currentADSLevel.setADSLevel(3);
+		currentADSLevel.setADSType(ContextoADS.JAM);
 	}
 
 	private void execute_L3_3() {
-		return;
+		IL3_HighwayChauffer theL3HighwayChaufferService = OSGiUtils.getService(context, IL3_HighwayChauffer.class);
+		IL3_CityChauffer theL3CityChaufferService = OSGiUtils.getService(context, IL3_CityChauffer.class);
+
+		IADSContext currentADSLevel = OSGiUtils.getService(context, IADSContext.class);
+
+		theL3HighwayChaufferService.stopDriving();
+
+		theL3CityChaufferService.startDriving();
+		currentADSLevel.setADSLevel(3);
+		currentADSLevel.setADSType(ContextoADS.CITY);
 	}
 	
 	private void execute_L3_4() {

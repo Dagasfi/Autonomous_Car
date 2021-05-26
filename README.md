@@ -20,8 +20,19 @@ Implementación de un vehículo autónomo para la asignatura Sistemas Ubicuos y 
 
 ## Modo de trabajo
 
-Separar interfaces de implementaciones.
+1) Separamos las interfaces de las implementaciones 
 
-	Autonomouscar.interfaces
-		- IEngine
-		- 
+La convención de nombres ha de ser "I*" para interfaces.
+
+2) Separamos los elementos del bucle MAPE-K
+
+​	2.1) Contextos (Probes / Sensores)
+
+​	2.2) Propiedades
+
+​	2.3) Monitores
+
+​	2.4) Reglas de adaptación
+
+
+

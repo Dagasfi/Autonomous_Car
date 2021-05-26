@@ -1,6 +1,7 @@
 package sua.autonomouscar.interfaces;
 
 public enum EDriverAttention {
+	UNKNOWN,
 	Attentive,
 	Slept,
 	Not_Attentive,

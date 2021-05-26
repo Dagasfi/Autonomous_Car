@@ -1,6 +1,7 @@
 package sua.autonomouscar.interfaces;
 
 public enum EAutonomousLevel {
+	UNDEFINED,
 	L0,
 	L1,
 	L2,

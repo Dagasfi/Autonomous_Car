@@ -41,37 +41,59 @@ public class PropList extends Thing implements IProperty{
 
 	@Override
 	public ERoadType getRoad_type_prop() {
-		return (ERoadType) this.props.get(PropList.ROADTYPEPROP);
+		if(((Hashtable)this.props).containsKey(PropList.ROADTYPEPROP)) {
+			return (ERoadType) this.props.get(PropList.ROADTYPEPROP);
+		}
+		return ERoadType.UNKNOWN;
 	}
 
 	@Override
 	public EAutonomousLevel getNivel_autonomia() {
-		return (EAutonomousLevel) this.props.get("nivel_autonomia_prop");
+		if(((Hashtable)this.props).containsKey("nivel_autonomia_prop")) {
+			return (EAutonomousLevel) this.props.get("nivel_autonomia_prop");
+		}
+		return EAutonomousLevel.UNDEFINED;
 	}
 
 	@Override
 	public EDrivingMode getModo_de_conduccion() {
-		return (EDrivingMode) this.props.get("modo_conduccion_prop");
+		if(((Hashtable)this.props).containsKey("modo_conduccion_prop")) {
+			return (EDrivingMode) this.props.get("modo_conduccion_prop");
+		}
+		return EDrivingMode.UNDEFINED;
 	}
 
 	@Override
 	public ERoadStatus getCongestion_prop() {
-		return (ERoadStatus) this.props.get("congestion_prop");
+		if(((Hashtable)this.props).containsKey("congestion_prop")) {
+			return (ERoadStatus) this.props.get("congestion_prop");
+		}
+		return ERoadStatus.UNKNOWN;
 	}
 
 	@Override
 	public EDriverAttention getUser_status_prop() {
-		return (EDriverAttention) this.props.get("user_status_prop");
+		if(((Hashtable)this.props).containsKey("user_status_prop")) {
+			return (EDriverAttention) this.props.get("user_status_prop");
+		}
+		return EDriverAttention.UNKNOWN;
 	}
 
 	@Override
 	public ESensorStatus getSensor_status_prop() {
-		return (ESensorStatus) this.props.get("sensor_status_prop");
+		if(((Hashtable)this.props).containsKey("sensor_status_prop")) {
+			return (ESensorStatus) this.props.get("sensor_status_prop");
+		}
+		return ESensorStatus.UNKNOWN;
 	}
 
 	@Override
 	public int getUser_location_prop() {
-		return (int) this.props.get("user_location_prop");
+		if(((Hashtable)this.props).containsKey("user_location_prop")) {
+			return (int) this.props.get("user_location_prop");
+		}
+		return -1;
+		
 	}
 
 	@Override
@@ -118,7 +140,10 @@ public class PropList extends Thing implements IProperty{
 
 	@Override
 	public String getMaxAutonomyLevel() {
-		return (String) this.props.get("max_autonomy_level_prop");
+		if(((Hashtable)this.props).containsKey("max_autonomy_level_prop")) {
+			return (String) this.props.get("max_autonomy_level_prop");
+		}
+		return "UNDEFINED";
 	}
 
 	@Override
@@ -129,7 +154,10 @@ public class PropList extends Thing implements IProperty{
 
 	@Override
 	public int getCurrentADSLevel() {
-		return (int) this.props.get("current_ADS_level_prop");
+		if(((Hashtable)this.props).containsKey("current_ADS_level_prop")) {
+			return (int) this.props.get("current_ADS_level_prop");
+		}
+		return -1;
 	}
 
 	@Override
@@ -141,7 +169,10 @@ public class PropList extends Thing implements IProperty{
 
 	@Override
 	public String getCurrentADSType() {
-		return (String) this.props.get("current_ADS_type_prop");
+		if(((Hashtable)this.props).containsKey("current_ADS_type_prop")) {
+			return (String) this.props.get("current_ADS_type_prop");
+		}
+		return "UNDEFINED";
 	}
 
 	@Override
@@ -165,7 +196,10 @@ public class PropList extends Thing implements IProperty{
 
 	@Override
 	public boolean getHandOnWheel() {
-		return (boolean) this.props.get("hands_on_wheel_prop");
+		if(((Hashtable)this.props).containsKey("hands_on_wheel_prop")) {
+			return (boolean) this.props.get("hands_on_wheel_prop");
+		}
+		return false;
 	}
 
 	@Override

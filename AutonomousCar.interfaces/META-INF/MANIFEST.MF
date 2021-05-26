@@ -5,8 +5,12 @@ Bundle-SymbolicName: AutonomousCar.interfaces
 Bundle-Version: 1.0.0
 Bundle-Vendor: JoanFons@SUA
 Automatic-Module-Name: AutonomousCar.interfaces
-Export-Package: sua.autonomouscar.devices.interfaces,
+Export-Package: sua.autonomouscar.context.interfaces,
+ sua.autonomouscar.devices.interfaces,
  sua.autonomouscar.driving.interfaces,
  sua.autonomouscar.interaction.interfaces,
  sua.autonomouscar.interfaces,
+ sua.autonomouscar.monitors.interfaces,
+ sua.autonomouscar.properties.interfaces,
+ sua.autonomouscar.rules.interfaces,
  sua.autonomouscar.simulation.interfaces

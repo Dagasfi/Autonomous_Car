@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SensorStatus
+Bundle-SymbolicName: Monitor.SensorStatus
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: monitor.sensorstatus.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: org.osgi.framework;version="1.3.0",
+ sua.autonomouscar.context.interfaces,
+ sua.autonomouscar.infrastructure,
+ sua.autonomouscar.infrastructure.monitors,
+ sua.autonomouscar.interfaces,
+ sua.autonomouscar.monitors.interfaces,
+ sua.autonomouscar.properties,
+ sua.autonomouscar.properties.interfaces
+Automatic-Module-Name: Monitor.SensorStatus

@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Userlocation
+Bundle-SymbolicName: monitor.Userlocation
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: monitor.Userlocation
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: org.osgi.framework,
+ sua.autonomouscar.context.interfaces,
+ sua.autonomouscar.devices.interfaces,
+ sua.autonomouscar.infrastructure,
+ sua.autonomouscar.infrastructure.monitors,
+ sua.autonomouscar.properties,
+ sua.autonomouscar.properties.interfaces

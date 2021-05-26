@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RoadSensor
+Bundle-SymbolicName: Contexto.RoadSensor
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: Contexto.RoadSensor
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: org.osgi.framework,
+ sua.autonomouscar.context.interfaces,
+ sua.autonomouscar.infrastructure,
+ sua.autonomouscar.interfaces

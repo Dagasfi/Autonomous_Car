@@ -16,9 +16,13 @@ public class HumanSensors extends Thing implements IHumanSensors {
 	protected ISeatSensor copilotSeatSensor = null;
 	protected IHandsOnWheelSensor howSensor = null;
 	
+	public static final String WORKINGMODE = "isworking";
+
+	
 	public HumanSensors(BundleContext context, String id) {
 		super(context, id);
 		this.addImplementedInterface(IHumanSensors.class.getName());
+		this.setWorking(true);
 	}
 	
 	@Override
@@ -103,6 +107,17 @@ public class HumanSensors extends Thing implements IHumanSensors {
 		if ( this.howSensor != null )
 			this.howSensor.setTheHandsOnTheSteeringWheel(value);
 		return this;
+	}
+
+	@Override
+	public IHumanSensors setWorking(boolean mode) {
+		this.setProperty(HumanSensors.WORKINGMODE, mode);
+		return this;
+	}
+
+	@Override
+	public boolean isWorking() {
+		return (boolean) this.getProperty(HumanSensors.WORKINGMODE);
 	}
 
 

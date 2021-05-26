@@ -661,28 +661,4 @@ public class L3Rules extends Rule implements ServiceListener{
 		}	
 	}
 	
-	
-	private void prepareL3Highway () {
-		IL3_HighwayChauffer theL3HighwayChaufferService = OSGiUtils.getService(context, IL3_HighwayChauffer.class);
-		theL3HighwayChaufferService.setHumanSensors("HumanSensors");
-		theL3HighwayChaufferService.setRoadSensor("RoadSensor");
-		theL3HighwayChaufferService.setEngine("Engine");
-		theL3HighwayChaufferService.setSteering("Steering");
-		theL3HighwayChaufferService.setFrontDistanceSensor("FrontDistanceSensor");
-		theL3HighwayChaufferService.setRearDistanceSensor("RearDistanceSensor");
-		theL3HighwayChaufferService.setRightDistanceSensor("RightDistanceSensor");
-		theL3HighwayChaufferService.setLeftDistanceSensor("LeftDistanceSensor");
-		theL3HighwayChaufferService.setRightLineSensor("RightLineSensor");
-		theL3HighwayChaufferService.setLeftLineSensor("LeftLineSensor");
-		
-		theL3HighwayChaufferService.setReferenceSpeed(L3_HighwayChauffer.DEFAULT_REFERENCE_SPEED);
-		theL3HighwayChaufferService.setLongitudinalSecurityDistance(L3_HighwayChauffer.DEFAULT_LONGITUDINAL_SECURITY_DISTANCE);
-		theL3HighwayChaufferService.setLateralSecurityDistance(L3_HighwayChauffer.DEFAULT_LATERAL_SECURITY_DISTANCE);
-
-		theL3HighwayChaufferService.setNotificationService("NotificationService");		
-
-		theL3HighwayChaufferService.setFallbackPlan("ParkInTheRoadShoulderFallbackPlan");
-	}
-	
-	
 }

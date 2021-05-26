@@ -1,6 +1,7 @@
 package sua.autonomouscar.interfaces;
 
 public enum EDrivingMode {
+	UNDEFINED,
 	L0_ManualDriving,
 	L1_AssistedDriving,
 	L2_AdaptiveCruiseControl,

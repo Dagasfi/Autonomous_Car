@@ -39,7 +39,7 @@ public class Activator implements BundleActivator {
 		if(ref2 != null) {
 			System.out.println("[SIM] - DISTANCE SENSOR TO False!!!");
 			contextoSensorDistancia = (IDistanceSensorContext) this.context.getService(ref2);
-			contextoSensorDistancia.setDistanceSensorWorkingMode(false);;	
+			// contextoSensorDistancia.setDistanceSensorWorkingMode(false);;	
 			System.out.println("[SIM] - DISTANCE SENSOR TO False!!!");
 
 		}
@@ -49,7 +49,7 @@ public class Activator implements BundleActivator {
 		if(ref3 != null) {
 			System.out.println("[SIM] - DISTANCE SENSOR TO False!!!");
 			DistanceSensor sensorDistancia = (DistanceSensor) this.context.getService(ref3);
-			sensorDistancia.setWorking(false);
+			// sensorDistancia.setWorking(false);
 			System.out.println("[SIM] - "+ sensorDistancia.getId() +" SENSOR TO False!!!");
 
 		}

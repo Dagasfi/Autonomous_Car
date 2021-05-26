@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Console
+Bundle-SymbolicName: Debug.console
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: debug.console.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: org.osgi.framework;version="1.3.0",
+ sua.autonomouscar.simulation.console.commands
+Automatic-Module-Name: Debug.console

@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TestRules
+Bundle-SymbolicName: Simulation.TestRules
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: simulation.testrules.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: org.osgi.framework;version="1.3.0",
+ sua.autonomouscar.context.interfaces,
+ sua.autonomouscar.devices.interfaces,
+ sua.autonomouscar.interfaces,
+ sua.autonomouscar.simulation.console.commands
+Automatic-Module-Name: Simulation.TestRules

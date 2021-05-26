@@ -25,6 +25,7 @@ public class ContextoRoadSensor extends Thing implements IRoadContext{
 		this.context = context;
 		this.setRoadType(ERoadType.UNKNOWN);
 		this.sr = this.context.registerService(IRoadContext.class, this, props);
+		this.registerThing();
 	}
 	
 	@Override

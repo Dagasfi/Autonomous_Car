@@ -5,6 +5,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 
 import sua.autonomouscar.context.interfaces.ICongestionContext;
+import sua.autonomouscar.devices.interfaces.IRoadSensor;
 import sua.autonomouscar.infrastructure.OSGiUtils;
 
 public class Activator implements BundleActivator {
@@ -22,7 +23,8 @@ public class Activator implements BundleActivator {
 		this.controlador = new ControladorCongestion(bundleContext, "Monitor_congestion");
 		this.controlador.registerThing();
 		
-		String listenerFiltro = "(" + Constants.OBJECTCLASS + "=" + ICongestionContext.class.getName() + ")";
+//		String listenerFiltro = "(" + Constants.OBJECTCLASS + "=" + ICongestionContext.class.getName() + ")";
+		String listenerFiltro = "(" + Constants.OBJECTCLASS + "=" + IRoadSensor.class.getName() + ")";
 		
 		this.context.addServiceListener(controlador, listenerFiltro);
 	}

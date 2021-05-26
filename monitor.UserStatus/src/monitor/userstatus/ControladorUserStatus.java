@@ -35,19 +35,15 @@ public class ControladorUserStatus extends Monitor implements ServiceListener{
 		Object service = this.context.getService(event.getServiceReference());
 		
 		if (service instanceof IManosVolanteContext) {
-			System.out.println("Es del ManosVolante.");
 			IManosVolanteContext manosVolanteContext = (IManosVolanteContext)  this.context.getService(event.getServiceReference());
 			this.manosVolanteContext = manosVolanteContext.isManosVolante();
 		}else if(service instanceof IDriverSleepingContext) {
-			System.out.println("Es de DriverSleeping");
 			IDriverSleepingContext driverSleepingContext = (IDriverSleepingContext)  this.context.getService(event.getServiceReference());
 			this.driverSleepingContext = driverSleepingContext.isDriverSleeping();
 		}else if(service instanceof IUbicacionDriverContext) {
-			System.out.println("Es de UbicacionDriverContext");
 			IUbicacionDriverContext UbicacionDriverContext = (IUbicacionDriverContext)  this.context.getService(event.getServiceReference());
 			this.UbicacionDriverContext = UbicacionDriverContext.getUbicacionDriver();
 		}else if(service instanceof IMirandoAlFrente) {
-			System.out.println("Es de MirandoAlFrente");
 			IMirandoAlFrente mirandoAlFrenteContext = (IMirandoAlFrente)  this.context.getService(event.getServiceReference());
 			this.mirandoAlFrenteContext = mirandoAlFrenteContext.isMirandoAlFrente();
 		}

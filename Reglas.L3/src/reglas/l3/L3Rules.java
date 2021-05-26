@@ -638,7 +638,6 @@ public class L3Rules extends Rule implements ServiceListener{
 	}
 	
 	private void execute_L3_7(String ADSType, ESensorStatus errorType, ERoadType road_type_prop) {
-		System.out.println("L3_7:: " +errorType);
 		IL3_DrivingService il3_drivingService = null;
 		if(ADSType.equals(ContextoADS.JAM)) {
 			il3_drivingService =  OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);

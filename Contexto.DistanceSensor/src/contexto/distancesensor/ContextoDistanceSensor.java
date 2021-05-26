@@ -19,7 +19,6 @@ public class ContextoDistanceSensor extends Thing implements IDistanceSensorCont
 	
 	public ContextoDistanceSensor(BundleContext context, String id) {
 		super(context, id);
-		System.out.println("SE HA REGISTRADO EL DISTANCESENSOR");
 		this.addImplementedInterface(IDistanceSensorContext.class.getName());
 		this.props.put("id", id);
 		this.context = context;

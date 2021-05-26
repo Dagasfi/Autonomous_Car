@@ -33,11 +33,9 @@ public class ControladorSensorStatus extends Monitor implements ServiceListener{
 		Object service = this.context.getService(event.getServiceReference());
 		
 		if (service instanceof ILidarContext) {
-			System.out.println("Es del lidar.");
 			ILidarContext sensorDistContext = (ILidarContext)  this.context.getService(event.getServiceReference());
 			this.lidarContext = sensorDistContext.isLidarWorking();
 		}else if(service instanceof IDistanceSensorContext) {
-			System.out.println("Es un Distancesensor");
 			IDistanceSensorContext sensorDistContext = (IDistanceSensorContext)  this.context.getService(event.getServiceReference());
 			this.sensorDistContext = sensorDistContext.isDistanceSensorWorking();
 		}

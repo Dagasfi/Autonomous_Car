@@ -35,7 +35,6 @@ public class Activator implements BundleActivator {
 		IDistanceSensorContext contextoSensorDistancia= null;
 		ServiceReference ref2 = (ServiceReference)this.context.getServiceReference(IDistanceSensorContext.class);
 		
-		System.out.println("\n"+ this.context.getAllServiceReferences(IDistanceSensorContext.class.getName(), null) +"\n");
 		if(ref2 != null) {
 			System.out.println("[SIM] - DISTANCE SENSOR TO False!!!");
 			contextoSensorDistancia = (IDistanceSensorContext) this.context.getService(ref2);
@@ -57,7 +56,6 @@ public class Activator implements BundleActivator {
 		IDriverSleepingContext contextoDriverSleeping= null;
 		ServiceReference ref4 = (ServiceReference)this.context.getServiceReference(IDriverSleepingContext.class);
 		
-		System.out.println("\n"+ this.context.getAllServiceReferences(IDriverSleepingContext.class.getName(), null) +"\n");
 		if(ref4 != null) {
 			System.out.println("[SIM] - DRIVER SLEEPING TO False!!!");
 			contextoDriverSleeping = (IDriverSleepingContext) this.context.getService(ref4);
@@ -69,7 +67,6 @@ public class Activator implements BundleActivator {
 		IMirandoAlFrente contextoMirandoAlFrente= null;
 		ServiceReference ref5 = (ServiceReference)this.context.getServiceReference(IMirandoAlFrente.class);
 		
-		System.out.println("\n"+ this.context.getAllServiceReferences(IMirandoAlFrente.class.getName(), null) +"\n");
 		if(ref5 != null) {
 			System.out.println("[SIM] - Mirando Al Frente TO true!!!");
 			contextoMirandoAlFrente = (IMirandoAlFrente) this.context.getService(ref5);
@@ -81,7 +78,6 @@ public class Activator implements BundleActivator {
 		IUbicacionDriverContext contextoUbicacionDriver = null;
 		ServiceReference ref6 = (ServiceReference)this.context.getServiceReference(IUbicacionDriverContext.class);
 		
-		System.out.println("\n"+ this.context.getAllServiceReferences(IUbicacionDriverContext.class.getName(), null) +"\n");
 		if(ref6 != null) {
 			System.out.println("[SIM] - Ubicacion Driver TO 1!!!");
 			contextoUbicacionDriver = (IUbicacionDriverContext) this.context.getService(ref6);
@@ -93,7 +89,6 @@ public class Activator implements BundleActivator {
 		IManosVolanteContext contextoManosVolanteContext = null;
 		ServiceReference ref7 = (ServiceReference)this.context.getServiceReference(IManosVolanteContext.class);
 		
-		System.out.println("\n"+ this.context.getAllServiceReferences(IManosVolanteContext.class.getName(), null) +"\n");
 		if(ref7 != null) {
 			System.out.println("[SIM] - Manos Volante TO True!!!");
 			contextoManosVolanteContext = (IManosVolanteContext) this.context.getService(ref7);

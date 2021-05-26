@@ -19,7 +19,6 @@ public class ContextoRoadSensor extends Thing implements IRoadContext{
 	
 	public ContextoRoadSensor(BundleContext context, String id) {
 		super(context, id);
-		System.out.println("SE HA REGISTRADO EL ROADSENSOR");
 		this.addImplementedInterface(IRoadContext.class.getName());
 		this.props.put("id", id);
 		this.context = context;

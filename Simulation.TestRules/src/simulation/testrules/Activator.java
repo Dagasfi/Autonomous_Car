@@ -32,9 +32,7 @@ public class Activator implements BundleActivator {
 		
 		
 		IRoadSensor contextoRoad = null;
-		System.out.println("<SIM> - " + this.context.getAllServiceReferences(IRoadSensor.class.getName(), null));
 		ServiceReference ref2 = (ServiceReference)this.context.getServiceReference(IRoadSensor.class);
-		System.out.println("REF 2: " + ref2);
 		if(ref2 != null) {
 			System.out.println("[SIM] - PASAMOS A CITY!");
 			contextoRoad = (IRoadSensor) this.context.getService(ref2);
